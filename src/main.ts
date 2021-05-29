@@ -30,7 +30,13 @@ const bootstrap = async () => {
   });
 
   app.useGlobalFilters(new ExceptionsFilter());
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      forbidNonWhitelisted: true,
+      transform: true,
+      whitelist: true,
+    }),
+  );
 
   const config = new DocumentBuilder()
     .addBearerAuth()
