@@ -8,8 +8,8 @@ import {
   Post,
 } from '@nestjs/common';
 import { OrphanStepsService } from './orphan-steps.service';
-import { CreateOrphanStepDto } from './dto/create-orphan-step.dto';
-import { UpdateOrphanStepDto } from './dto/update-orphan-step.dto';
+import { CreateOrphanStepsDto } from './dto/create-orphan-steps.dto';
+import { UpdateOrphanStepsDto } from './dto/update-orphan-steps.dto';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('orphan-steps')
@@ -18,7 +18,7 @@ export class OrphanStepsController {
   constructor(private readonly orphanStepsService: OrphanStepsService) {}
 
   @Post()
-  create(@Body() createOrphanStepDto: CreateOrphanStepDto) {
+  create(@Body() createOrphanStepDto: CreateOrphanStepsDto) {
     return this.orphanStepsService.create(createOrphanStepDto);
   }
 
@@ -35,7 +35,7 @@ export class OrphanStepsController {
   @Patch(':id')
   update(
     @Param('id') id: string,
-    @Body() updateOrphanStepDto: UpdateOrphanStepDto,
+    @Body() updateOrphanStepDto: UpdateOrphanStepsDto,
   ) {
     return this.orphanStepsService.update(+id, updateOrphanStepDto);
   }
