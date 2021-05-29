@@ -6,6 +6,7 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { logger } from './loggerInstance';
+import { BaseResponse } from './response.interceptor';
 
 @Catch()
 export class ExceptionsFilter implements ExceptionFilter {
@@ -16,10 +17,15 @@ export class ExceptionsFilter implements ExceptionFilter {
 
     const exceptionDetails =
       exception instanceof HttpException
-        ? { status: exception.getStatus(), error: exception.message }
+        ? {
+            code: exception.getStatus(),
+            message: exception.message,
+            status: 'Failed',
+          }
         : {
-            status: HttpStatus.INTERNAL_SERVER_ERROR,
-            error: 'Internal Server Error',
+            code: HttpStatus.INTERNAL_SERVER_ERROR,
+            message: 'Internal Server Error',
+            status: 'Failed',
           };
 
     logger.error(
@@ -30,9 +36,11 @@ export class ExceptionsFilter implements ExceptionFilter {
     logger.error(
       `-------------End Error in path ${request.url}-----------------`,
     );
-    return response.status(exceptionDetails.status).send({
-      ...exceptionDetails,
+    return response.status(exceptionDetails.code).send({
+      message: exceptionDetails.message,
+      status: exceptionDetails.status,
       path: request.url,
-    });
+      data: null,
+    } as BaseResponse<null>);
   }
 }
