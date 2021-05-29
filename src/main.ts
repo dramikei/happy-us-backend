@@ -1,3 +1,6 @@
+import * as dotenv from 'dotenv';
+dotenv.config();
+
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import {
@@ -42,9 +45,11 @@ const bootstrap = async () => {
     customSiteTitle: 'HappyUs API Docs',
   });
 
-  await app.listen(3000);
+  await app.listen(process.env.PORT || process.env.APP_PORT);
 };
 
 bootstrap().then(() => {
-  console.log('Server Started');
+  console.log(
+    `Server Started on port ${process.env.PORT || process.env.APP_PORT}`,
+  );
 });
