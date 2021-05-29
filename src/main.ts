@@ -11,6 +11,7 @@ const bootstrap = async () => {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
     new FastifyAdapter(),
+    { cors: true },
   );
   await app.register(fastifyHelmet, {
     contentSecurityPolicy: {
