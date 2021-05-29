@@ -3,21 +3,12 @@ import { UserService } from './user.service';
 import { UserController } from './user.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from './entities/user.entity';
-import { logger } from '../utils/loggerInstance';
+import { registerMongoSchema } from '../utils/registerMongoSchema';
 
 @Module({
   imports: [
     MongooseModule.forFeatureAsync([
-      {
-        name: User.name,
-        useFactory: () => {
-          const schema = UserSchema;
-          schema.post('save', (doc) => {
-            logger.log(`Successful create new user with id: ${doc._id}`);
-          });
-          return schema;
-        },
-      },
+      registerMongoSchema(UserSchema, User.name),
     ]),
   ],
   controllers: [UserController],

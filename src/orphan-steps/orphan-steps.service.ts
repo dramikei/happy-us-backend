@@ -1,9 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { CreateOrphanStepsDto } from './dto/create-orphan-steps.dto';
 import { UpdateOrphanStepsDto } from './dto/update-orphan-steps.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import {
+  OrphanSteps,
+  OrphanStepsDocument,
+} from './entities/orphan-steps.entity';
 
 @Injectable()
 export class OrphanStepsService {
+  constructor(
+    @InjectModel(OrphanSteps.name)
+    private readonly orphanStepsModel: Model<OrphanStepsDocument>,
+  ) {}
+
   create(createOrphanStepDto: CreateOrphanStepsDto) {
     return 'This action adds a new orphanStep';
   }
