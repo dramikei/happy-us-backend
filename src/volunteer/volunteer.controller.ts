@@ -1,16 +1,18 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
 } from '@nestjs/common';
 import { VolunteerService } from './volunteer.service';
 import { CreateVolunteerDto } from './dto/create-volunteer.dto';
 import { UpdateVolunteerDto } from './dto/update-volunteer.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('volunteer')
 @Controller('api/volunteer')
 export class VolunteerController {
   constructor(private readonly volunteerService: VolunteerService) {}

@@ -1,16 +1,18 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
 } from '@nestjs/common';
 import { OrphanStepsService } from './orphan-steps.service';
 import { CreateOrphanStepDto } from './dto/create-orphan-step.dto';
 import { UpdateOrphanStepDto } from './dto/update-orphan-step.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('orphan-steps')
 @Controller('api/orphan-steps')
 export class OrphanStepsController {
   constructor(private readonly orphanStepsService: OrphanStepsService) {}
