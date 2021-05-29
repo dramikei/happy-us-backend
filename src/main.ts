@@ -10,6 +10,7 @@ import {
 import { AppModule } from './app.module';
 import fastifyHelmet from 'fastify-helmet';
 import { ExceptionsFilter } from './utils/exceptions.filter';
+import { ValidationPipe } from '@nestjs/common';
 
 const bootstrap = async () => {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -29,6 +30,7 @@ const bootstrap = async () => {
   });
 
   app.useGlobalFilters(new ExceptionsFilter());
+  app.useGlobalPipes(new ValidationPipe());
 
   const config = new DocumentBuilder()
     .addBearerAuth()
