@@ -6,6 +6,7 @@ import {
 } from '@nestjs/platform-fastify';
 import { AppModule } from './app.module';
 import fastifyHelmet from 'fastify-helmet';
+import { ExceptionsFilter } from './utils/exceptions.filter';
 
 const bootstrap = async () => {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -24,6 +25,8 @@ const bootstrap = async () => {
     },
   });
 
+  app.useGlobalFilters(new ExceptionsFilter());
+
   const config = new DocumentBuilder()
     .addBearerAuth()
     .setTitle('Happy Us')
@@ -31,6 +34,7 @@ const bootstrap = async () => {
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);
+
   SwaggerModule.setup('api', app, document, {
     swaggerOptions: {
       persistAuthorization: true,
