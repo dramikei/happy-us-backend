@@ -7,6 +7,7 @@ import { registerMongoSchema } from '../utils/registerMongoSchema';
 
 @Module({
   imports: [
+    // can use this here [MongooseModule.forFeature([{ name: Cat.name, schema: CatSchema }])] if hooks not required
     MongooseModule.forFeatureAsync([
       registerMongoSchema(UserSchema, User.name),
     ]),

@@ -1,6 +1,7 @@
 import { logger } from './loggerInstance';
 
 export const registerMongoSchema = (newSchema: any, schemaName: string) => {
+  // can use this here { name: Cat.name, schema: CatSchema } if hooks not required,
   return {
     name: schemaName,
     useFactory: () => {
