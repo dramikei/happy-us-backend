@@ -1,10 +1,32 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import * as mongoose from 'mongoose';
 import { Document } from 'mongoose';
+import { IsArray, IsDate, IsNotEmpty, Length } from 'class-validator';
 
 @Schema()
 export class Post {
+  @IsNotEmpty()
+  @Length(20)
   @Prop({ required: true })
-  email: string;
+  content: string;
+
+  @IsNotEmpty()
+  @Length(1, 20)
+  @Prop({ required: true })
+  heading: string;
+
+  @IsNotEmpty()
+  @IsDate()
+  @Prop({ required: true })
+  time: Date;
+
+  @IsNotEmpty()
+  @IsArray()
+  @Prop({
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    default: [],
+  })
+  likedBy: string[];
 }
 
 export type PostDocument = Post & Document;
