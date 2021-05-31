@@ -13,5 +13,6 @@ import { Volunteer, VolunteerSchema } from './entities/volunteer.entity';
   ],
   controllers: [VolunteerController],
   providers: [VolunteerService],
+  exports: [VolunteerService],
 })
 export class VolunteerModule {}

@@ -12,6 +12,7 @@ import { registerMongoSchema } from '../utils/registerMongoSchema';
       registerMongoSchema(UserSchema, User.name),
     ]),
   ],
+  exports: [UserService],
   controllers: [UserController],
   providers: [UserService],
 })
