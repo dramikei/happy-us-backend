@@ -45,7 +45,12 @@ export class AuthService {
             ...baseUserFields,
             posts: [],
           })
-        : await this.volunteerService.create({ ...baseUserFields });
+        : await this.volunteerService.create({
+            ...baseUserFields,
+            hobbies: registerDto.hobbies,
+            aboutMe: registerDto.aboutMe,
+            imageUrl: registerDto.imageUrl,
+          });
 
     createdEntity.password = 'lol, it hidden from response HACKERRR';
     return { newUser: createdEntity, accessToken: 'tbd' };

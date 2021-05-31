@@ -1,4 +1,8 @@
 import {
+  ArrayMaxSize,
+  ArrayMinSize,
+  ArrayUnique,
+  IsArray,
   IsEnum,
   IsFirebasePushId,
   IsNotEmpty,
@@ -9,6 +13,7 @@ import {
   Length,
 } from 'class-validator';
 import { UserType } from './login.dto';
+import { Prop } from '@nestjs/mongoose';
 
 export class RegisterDto {
   @IsNotEmpty()
@@ -40,4 +45,23 @@ export class RegisterDto {
     snapchatId?: string;
     discordId?: string;
   };
+
+  @IsOptional()
+  @IsNotEmpty()
+  @IsArray()
+  @ArrayMinSize(3)
+  @ArrayMaxSize(3)
+  @ArrayUnique()
+  @Prop({ type: [{ type: String }], required: true })
+  hobbies: string[];
+
+  @IsOptional()
+  @IsNotEmpty()
+  @Prop({ type: String, required: true })
+  aboutMe: string;
+
+  @IsOptional()
+  @IsNotEmpty()
+  @Prop({ type: String, required: true })
+  imageUrl: string;
 }
