@@ -30,6 +30,17 @@ export class AuthService {
         HttpStatus.FORBIDDEN,
       );
     }
+    if (
+      registerDto.type === UserType.volunteer &&
+      !registerDto.hobbies &&
+      !registerDto.aboutMe &&
+      !registerDto.imageUrl
+    ) {
+      throw new HttpException(
+        'Missing essential parameters for volunteer',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
     const salt = bcrypt.genSaltSync(12);
     const baseUserFields = {
       age: registerDto.age,
