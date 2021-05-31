@@ -1,9 +1,12 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { LoginDto, UserType } from './dto/login.dto';
+import * as bcrypt from 'bcryptjs';
 import { RegisterDto } from './dto/register.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { UserService } from '../user/user.service';
 import { VolunteerService } from '../volunteer/volunteer.service';
+import { UserDocument } from '../user/entities/user.entity';
+import { VolunteerDocument } from '../volunteer/entities/volunteer.entity';
 
 @Injectable()
 export class AuthService {
@@ -12,7 +15,8 @@ export class AuthService {
     private readonly volunteerService: VolunteerService,
   ) {}
 
-  login(createAuthDto: LoginDto) {
+  login(loginDto: LoginDto) {
+    // bcrypt.compareSync(loginDto.password, hash);
     return 'This action adds a new auth';
   }
 
@@ -26,16 +30,16 @@ export class AuthService {
         HttpStatus.FORBIDDEN,
       );
     }
-
+    const salt = bcrypt.genSaltSync(12);
     const baseUserFields = {
       age: registerDto.age,
       fcmToken: registerDto.fcmToken,
-      password: registerDto.password,
+      password: bcrypt.hashSync(registerDto.password, salt),
       social: registerDto.social,
       username: registerDto.username,
     };
 
-    const createdEntity =
+    const createdEntity: UserDocument | VolunteerDocument =
       registerDto.type === UserType.user
         ? await this.userService.create({
             ...baseUserFields,
@@ -43,6 +47,7 @@ export class AuthService {
           })
         : await this.volunteerService.create({ ...baseUserFields });
 
+    createdEntity.password = 'lol, it hidden from response HACKERRR';
     return { newUser: createdEntity, accessToken: 'tbd' };
   }
 
