@@ -19,7 +19,7 @@ export class StaticContentService {
     return 'This action adds a new StaticContent';
   }
 
-  getAllSection() {
+  getAllSections() {
     return `This action returns all StaticContents`;
   }
 

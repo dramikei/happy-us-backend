@@ -23,8 +23,8 @@ export class StaticContentController {
   }
 
   @Get()
-  getAllSection() {
-    return this.staticContentService.getAllSection();
+  getAllSections() {
+    return this.staticContentService.getAllSections();
   }
 
   @Get(':name')
