@@ -12,6 +12,7 @@ import {
   Length,
 } from 'class-validator';
 
+@Schema()
 export class Base {
   @IsNotEmpty()
   @IsString()
