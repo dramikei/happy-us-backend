@@ -23,25 +23,25 @@ export class StaticContentController {
   }
 
   @Get()
-  findAll() {
-    return this.staticContentService.findAll();
+  getAllSection() {
+    return this.staticContentService.getAllSection();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.staticContentService.findOne(+id);
+  @Get(':name')
+  getOneSection(@Param('name') name: string) {
+    return this.staticContentService.getOneSection(name);
   }
 
-  @Patch(':id')
+  @Patch(':name')
   update(
-    @Param('id') id: string,
+    @Param('name') name: string,
     @Body() updateStaticContentDto: UpdateStaticContentDto,
   ) {
-    return this.staticContentService.update(+id, updateStaticContentDto);
+    return this.staticContentService.update(name, updateStaticContentDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.staticContentService.remove(+id);
+  @Delete(':name')
+  remove(@Param('name') name: string) {
+    return this.staticContentService.remove(name);
   }
 }

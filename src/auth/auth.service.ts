@@ -20,11 +20,11 @@ export class AuthService {
     return `This action returns all auth`;
   }
 
-  changePassword(id: number, changePasswordDto: ChangePasswordDto) {
+  changePassword(id: string, changePasswordDto: ChangePasswordDto) {
     return `This action updates a #${id} auth`;
   }
 
-  logout(id: number) {
+  logout(id: string) {
     return `This action removes a #${id} auth`;
   }
 }

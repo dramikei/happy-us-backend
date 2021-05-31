@@ -19,19 +19,17 @@ export class AppointmentService {
     return 'This action adds a new Appointment';
   }
 
-  findAll() {
+  findForVolunteer() {
     return `This action returns all Appointment`;
   }
 
-  findOne(id: number) {
+  findForUser(id: string) {
     return `This action returns a #${id} Appointment`;
   }
 
-  update(id: number, updateAppointmentDto: UpdateAppointmentDto) {
+  // only volunteer can change it
+  // check for user type in req for verification
+  updateStatus(id: string, updateAppointmentDto: UpdateAppointmentDto) {
     return `This action updates a #${id} Appointment`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} Appointment`;
   }
 }

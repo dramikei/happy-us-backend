@@ -15,19 +15,20 @@ export class VolunteerController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.volunteerService.findOne(+id);
+    return this.volunteerService.findOne(id);
   }
 
+  // only admin can update details
   @Patch(':id')
   update(
     @Param('id') id: string,
     @Body() updateVolunteerDto: UpdateVolunteerDto,
   ) {
-    return this.volunteerService.update(+id, updateVolunteerDto);
+    return this.volunteerService.update(id, updateVolunteerDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.volunteerService.remove(+id);
+    return this.volunteerService.remove(id);
   }
 }

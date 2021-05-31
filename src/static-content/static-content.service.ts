@@ -19,19 +19,19 @@ export class StaticContentService {
     return 'This action adds a new StaticContent';
   }
 
-  findAll() {
+  getAllSection() {
     return `This action returns all StaticContents`;
   }
 
-  findOne(id: number) {
+  getOneSection(id: string) {
     return `This action returns a #${id} StaticContent`;
   }
 
-  update(id: number, updateStaticContentDto: UpdateStaticContentDto) {
+  update(id: string, updateStaticContentDto: UpdateStaticContentDto) {
     return `This action updates a #${id} StaticContent`;
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return `This action removes a #${id} StaticContent`;
   }
 }

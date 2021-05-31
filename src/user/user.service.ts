@@ -16,16 +16,16 @@ export class UserService {
     return await newUser.save();
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     throw new HttpException('Dummy fail req', HttpStatus.NOT_IMPLEMENTED);
     // return `This action returns a #${id} user`;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
+  update(id: string, updateUserDto: UpdateUserDto) {
     return `This action updates a #${id} user`;
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return `This action removes a #${id} user`;
   }
 }

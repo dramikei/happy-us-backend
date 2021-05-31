@@ -25,11 +25,11 @@ export class AuthController {
     @Param('id') id: string,
     @Body() changePasswordDto: ChangePasswordDto,
   ) {
-    return this.authService.changePassword(+id, changePasswordDto);
+    return this.authService.changePassword(id, changePasswordDto);
   }
 
   @Delete(':id')
   logout(@Param('id') id: string) {
-    return this.authService.logout(+id);
+    return this.authService.logout(id);
   }
 }

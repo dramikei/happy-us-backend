@@ -19,11 +19,11 @@ export class PostService {
     return `This action returns all post`;
   }
 
-  findOne(id: number) {
+  findUserPosts(id: string) {
     return `This action returns a #${id} post`;
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return `This action removes a #${id} post`;
   }
 }

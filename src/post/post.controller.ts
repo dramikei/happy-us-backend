@@ -18,13 +18,13 @@ export class PostController {
     return this.postService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.postService.findOne(+id);
+  @Get(':userId')
+  findUserPosts(@Param('userId') userId: string) {
+    return this.postService.findUserPosts(userId);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.postService.remove(+id);
+    return this.postService.remove(id);
   }
 }

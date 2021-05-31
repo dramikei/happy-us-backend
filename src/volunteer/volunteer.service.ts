@@ -20,15 +20,15 @@ export class VolunteerService {
     return `This action returns all volunteer`;
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return `This action returns a #${id} volunteer`;
   }
 
-  update(id: number, updateVolunteerDto: UpdateVolunteerDto) {
+  update(id: string, updateVolunteerDto: UpdateVolunteerDto) {
     return `This action updates a #${id} volunteer`;
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return `This action removes a #${id} volunteer`;
   }
 }
