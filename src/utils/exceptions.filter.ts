@@ -5,7 +5,7 @@ import {
   HttpException,
   HttpStatus,
 } from '@nestjs/common';
-import { logger } from './loggerInstance';
+import { logger } from './logger-instance';
 import { BaseResponse } from './response.interceptor';
 import { ServerResponse } from 'http';
 

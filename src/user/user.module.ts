@@ -3,7 +3,7 @@ import { UserService } from './user.service';
 import { UserController } from './user.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from './entities/user.entity';
-import { registerMongoSchema } from '../utils/registerMongoSchema';
+import { registerMongoSchema } from '../utils/register-mongo-schema';
 
 @Module({
   imports: [

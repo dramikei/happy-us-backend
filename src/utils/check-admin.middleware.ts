@@ -8,9 +8,11 @@ import {
 @Injectable()
 export class CheckAdminMiddleware implements NestMiddleware {
   async use(req, res, next) {
+    const searchParams = new URLSearchParams(req.url);
+
     if (
       req.method !== 'GET' &&
-      req.body?.adminToken !== process.env.AdminToken
+      searchParams.get('/?adminToken') !== process.env.AdminToken
     ) {
       throw new HttpException(
         'Only admin can perform these actions.',

@@ -16,10 +16,6 @@ export class UserService {
     return await newUser.save();
   }
 
-  findAll() {
-    return `This action returns all user`;
-  }
-
   findOne(id: number) {
     throw new HttpException('Dummy fail req', HttpStatus.NOT_IMPLEMENTED);
     // return `This action returns a #${id} user`;
