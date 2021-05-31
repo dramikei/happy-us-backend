@@ -6,12 +6,13 @@ import { PostModule } from './post/post.module';
 import { VolunteerModule } from './volunteer/volunteer.module';
 import { UserModule } from './user/user.module';
 import { AppointmentModule } from './appointment/appointment.module';
-import { APP_FILTER } from '@nestjs/core';
+import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { ExceptionsFilter } from './utils/exceptions.filter';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
 import { AuthMiddleware } from './auth/auth.middleware';
 import { CheckAdminMiddleware } from './utils/check-admin.middleware';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   imports: [
@@ -20,6 +21,10 @@ import { CheckAdminMiddleware } from './utils/check-admin.middleware';
     PostModule,
     AppointmentModule,
     StaticContentModule,
+    ThrottlerModule.forRoot({
+      ttl: 60,
+      limit: 100,
+    }),
     MongooseModule.forRoot(
       process.env.APP_ENV === 'DEV'
         ? process.env.DEV_DB_URL
@@ -28,7 +33,11 @@ import { CheckAdminMiddleware } from './utils/check-admin.middleware';
     AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService, { provide: APP_FILTER, useClass: ExceptionsFilter }],
+  providers: [
+    AppService,
+    { provide: APP_FILTER, useClass: ExceptionsFilter },
+    { provide: APP_GUARD, useClass: ThrottlerGuard },
+  ],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
