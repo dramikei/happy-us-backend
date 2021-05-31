@@ -11,13 +11,21 @@ export class UserService {
   ) {}
 
   async create(createUserDto: User) {
+    const existingUser = await this.userModel
+      .findOne({ username: createUserDto.username })
+      .lean();
+    if (existingUser) {
+      throw new HttpException(
+        'User with same name exists, please try another name.',
+        HttpStatus.CONFLICT,
+      );
+    }
     const newUser = new this.userModel(createUserDto);
     return await newUser.save();
   }
 
   findOne(id: string) {
-    throw new HttpException('Dummy fail req', HttpStatus.NOT_IMPLEMENTED);
-    // return `This action returns a #${id} user`;
+    return this.userModel.findById(id).lean().select({ password: 0 });
   }
 
   update(id: string, updateUserDto: UpdateUserDto) {

@@ -1,5 +1,4 @@
-import { Injectable } from '@nestjs/common';
-import { CreateVolunteerDto } from './dto/create-volunteer.dto';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UpdateVolunteerDto } from './dto/update-volunteer.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -12,11 +11,21 @@ export class VolunteerService {
     private readonly volunteerModel: Model<VolunteerDocument>,
   ) {}
 
-  create(createVolunteerDto: CreateVolunteerDto) {
-    return 'This action adds a new volunteer';
+  async create(createVolunteerDto: Volunteer) {
+    const existingVolunteer = await this.volunteerModel
+      .findOne({ username: createVolunteerDto.username })
+      .lean();
+    if (existingVolunteer) {
+      throw new HttpException(
+        'Volunteer with same name exists, please try another name.',
+        HttpStatus.CONFLICT,
+      );
+    }
+    const newVolunteer = new this.volunteerModel(createVolunteerDto);
+    return await newVolunteer.save();
   }
 
-  findAll() {
+  async findAll() {
     return `This action returns all volunteer`;
   }
 
