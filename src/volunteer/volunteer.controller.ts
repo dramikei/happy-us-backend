@@ -1,14 +1,5 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch } from '@nestjs/common';
 import { VolunteerService } from './volunteer.service';
-import { CreateVolunteerDto } from './dto/create-volunteer.dto';
 import { UpdateVolunteerDto } from './dto/update-volunteer.dto';
 import { ApiTags } from '@nestjs/swagger';
 
@@ -16,11 +7,6 @@ import { ApiTags } from '@nestjs/swagger';
 @Controller('api/volunteer')
 export class VolunteerController {
   constructor(private readonly volunteerService: VolunteerService) {}
-
-  @Post()
-  create(@Body() createVolunteerDto: CreateVolunteerDto) {
-    return this.volunteerService.create(createVolunteerDto);
-  }
 
   @Get()
   findAll() {
