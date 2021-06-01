@@ -26,18 +26,25 @@ export class VolunteerService {
   }
 
   async findAll() {
-    return `This action returns all volunteer`;
+    return this.volunteerModel.find().lean();
   }
 
-  findOne(id: string) {
-    return this.volunteerModel.findById(id).lean().select({ password: 0 });
+  async findOne(id: string, includePassword?: boolean) {
+    return this.volunteerModel
+      .findById(id)
+      .lean()
+      .select({ password: includePassword ? 1 : 0 });
   }
 
-  update(id: string, updateVolunteerDto: UpdateVolunteerDto) {
-    return `This action updates a #${id} volunteer`;
+  async findByUsername(username: string) {
+    return this.volunteerModel.findOne({ username }).lean();
   }
 
-  remove(id: string) {
-    return `This action removes a #${id} volunteer`;
+  async update(id: string, updateVolunteerDto: UpdateVolunteerDto) {
+    return this.volunteerModel.findByIdAndUpdate(id, updateVolunteerDto);
+  }
+
+  async remove(id: string) {
+    return this.volunteerModel.findByIdAndRemove(id);
   }
 }

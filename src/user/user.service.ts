@@ -24,15 +24,22 @@ export class UserService {
     return await newUser.save();
   }
 
-  findOne(id: string) {
-    return this.userModel.findById(id).lean().select({ password: 0 });
+  async findByUsername(username: string) {
+    return this.userModel.findOne({ username }).lean();
   }
 
-  update(id: string, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async findOne(id: string, includePassword?: boolean) {
+    return this.userModel
+      .findById(id)
+      .lean()
+      .select({ password: includePassword ? 1 : 0 });
   }
 
-  remove(id: string) {
-    return `This action removes a #${id} user`;
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    return this.userModel.findByIdAndUpdate(id, updateUserDto);
+  }
+
+  async remove(id: string) {
+    return this.userModel.findByIdAndRemove(id);
   }
 }

@@ -7,7 +7,8 @@ import { UserService } from '../user/user.service';
 import { VolunteerService } from '../volunteer/volunteer.service';
 import { UserDocument } from '../user/entities/user.entity';
 import { VolunteerDocument } from '../volunteer/entities/volunteer.entity';
-import { AuthInfo, GetAuthInfo } from './auth.middleware';
+import { AuthInfo } from './auth.middleware';
+import { getTokens } from '../utils/get-tokens';
 
 @Injectable()
 export class AuthService {
@@ -16,9 +17,29 @@ export class AuthService {
     private readonly volunteerService: VolunteerService,
   ) {}
 
-  login(loginDto: LoginDto) {
-    // bcrypt.compareSync(loginDto.password, hash);
-    return 'This action adds a new auth';
+  async login(loginDto: LoginDto) {
+    const authenticatedEntity =
+      loginDto.type === UserType.user
+        ? await this.userService.findByUsername(loginDto.username)
+        : await this.volunteerService.findByUsername(loginDto.username);
+    if (!authenticatedEntity) {
+      throw new HttpException('User does not exist', HttpStatus.UNAUTHORIZED);
+    }
+    const passwordCorrect = bcrypt.compareSync(
+      loginDto.password,
+      authenticatedEntity.password,
+    );
+    if (!passwordCorrect) {
+      throw new HttpException('Wrong Password', HttpStatus.FORBIDDEN);
+    }
+    return {
+      newUser: authenticatedEntity,
+      ...getTokens({
+        id: authenticatedEntity['_id'],
+        type: loginDto.type,
+      }),
+      message: `Successfully logged in the ${loginDto.type}`,
+    };
   }
 
   async register(registerDto: RegisterDto) {
@@ -65,10 +86,46 @@ export class AuthService {
           });
 
     createdEntity.password = 'lol, it hidden from response HACKERRR';
-    return { newUser: createdEntity, accessToken: 'tbd' };
+    return {
+      newUser: createdEntity,
+      ...getTokens({
+        id: createdEntity['_id'],
+        type: registerDto.type,
+      }),
+      message: `Successfully created new ${registerDto.type}`,
+    };
   }
 
-  changePassword(changePasswordDto: ChangePasswordDto, authInfo: AuthInfo) {
-    return `This action updates a #${authInfo.id} auth`;
+  async changePassword(
+    changePasswordDto: ChangePasswordDto,
+    authInfo: AuthInfo,
+  ) {
+    const authenticatedEntity =
+      authInfo.type === UserType.user
+        ? await this.userService.findOne(authInfo.id, true)
+        : await this.volunteerService.findOne(authInfo.id, true);
+    if (!authenticatedEntity) {
+      throw new HttpException('User does not exist', HttpStatus.UNAUTHORIZED);
+    }
+    const passwordCorrect = bcrypt.compareSync(
+      changePasswordDto.oldPassword,
+      authenticatedEntity.password,
+    );
+    if (!passwordCorrect) {
+      throw new HttpException('Wrong Password', HttpStatus.FORBIDDEN);
+    }
+    const salt = bcrypt.genSaltSync(12);
+    const encryptedPassword = bcrypt.hashSync(
+      changePasswordDto.newPassword,
+      salt,
+    );
+    authInfo.type === UserType.user
+      ? await this.userService.update(authInfo.id, {
+          password: encryptedPassword,
+        })
+      : await this.volunteerService.update(authInfo.id, {
+          password: encryptedPassword,
+        });
+    return `Successfully updated password`;
   }
 }

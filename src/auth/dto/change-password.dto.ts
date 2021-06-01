@@ -1,11 +1,6 @@
-import { IsEnum, IsNotEmpty, Length } from 'class-validator';
-import { UserType } from './login.dto';
+import { IsNotEmpty, Length } from 'class-validator';
 
 export class ChangePasswordDto {
-  @IsNotEmpty()
-  @IsEnum(UserType)
-  type: UserType;
-
   @IsNotEmpty()
   @Length(6)
   oldPassword: string;
