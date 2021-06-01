@@ -1,4 +1,18 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateAppointmentDto } from './create-appointment.dto';
+import { AppointmentStatus } from '../entities/appointment.entity';
+import { IsEnum, IsMongoId, IsNotEmpty } from 'class-validator';
 
-export class UpdateAppointmentDto extends PartialType(CreateAppointmentDto) {}
+export class UpdateAppointmentDto {
+  @IsNotEmpty()
+  @IsEnum(AppointmentStatus)
+  status: AppointmentStatus;
+
+  @IsNotEmpty()
+  @IsMongoId()
+  appointmentId: string;
+
+  @IsNotEmpty()
+  rejectMessage: string;
+
+  @IsNotEmpty()
+  acceptMessage: string;
+}

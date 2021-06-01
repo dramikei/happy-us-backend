@@ -3,6 +3,7 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Post, PostDocument } from './entities/post.entity';
+import { AuthInfo } from '../auth/auth.middleware';
 
 @Injectable()
 export class PostService {
@@ -11,7 +12,7 @@ export class PostService {
     private readonly postModel: Model<PostDocument>,
   ) {}
 
-  create(createPostDto: CreatePostDto) {
+  create(createPostDto: CreatePostDto, authInfo: AuthInfo) {
     return 'This action adds a new post';
   }
 

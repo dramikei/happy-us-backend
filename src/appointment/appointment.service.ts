@@ -7,6 +7,7 @@ import {
   Appointment,
   AppointmentDocument,
 } from './entities/appointment.entity';
+import { AuthInfo } from '../auth/auth.middleware';
 
 @Injectable()
 export class AppointmentService {
@@ -19,17 +20,13 @@ export class AppointmentService {
     return 'This action adds a new Appointment';
   }
 
-  findForVolunteer() {
-    return `This action returns all Appointment`;
-  }
-
-  findForUser(id: string) {
-    return `This action returns a #${id} Appointment`;
+  findForUser(authInfo: AuthInfo) {
+    return `This action returns a #${authInfo.id} Appointment`;
   }
 
   // only volunteer can change it
   // check for user type in req for verification
-  updateStatus(id: string, updateAppointmentDto: UpdateAppointmentDto) {
-    return `This action updates a #${id} Appointment`;
+  updateStatus(updateAppointmentDto: UpdateAppointmentDto, authInfo: AuthInfo) {
+    return `This action updates a #${updateAppointmentDto.appointmentId} Appointment`;
   }
 }

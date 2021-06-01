@@ -3,12 +3,12 @@ import { AppointmentService } from './appointment.service';
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
 import { UpdateAppointmentDto } from './dto/update-appointment.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { AuthInfo, GetAuthInfo } from '../auth/auth.middleware';
 
 @ApiTags('Appointment')
 @Controller('api/appointment')
 export class AppointmentController {
-  constructor(private readonly appointmentService: AppointmentService) {
-  }
+  constructor(private readonly appointmentService: AppointmentService) {}
 
   @Post()
   create(@Body() createAppointmentDto: CreateAppointmentDto) {
@@ -16,20 +16,15 @@ export class AppointmentController {
   }
 
   @Get()
-  findForVolunteer() {
-    return this.appointmentService.findForVolunteer();
+  findForUser(@GetAuthInfo() authInfo: AuthInfo) {
+    return this.appointmentService.findForUser(authInfo);
   }
 
-  @Get(':id')
-  findOneUser(@Param('id') id: string) {
-    return this.appointmentService.findForUser(id);
-  }
-
-  @Patch(':id')
+  @Patch()
   updateStatus(
-    @Param('id') id: string,
+    @GetAuthInfo() authInfo: AuthInfo,
     @Body() updateAppointmentDto: UpdateAppointmentDto,
   ) {
-    return this.appointmentService.updateStatus(id, updateAppointmentDto);
+    return this.appointmentService.updateStatus(updateAppointmentDto, authInfo);
   }
 }
