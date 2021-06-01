@@ -30,7 +30,7 @@ export class VolunteerService {
   }
 
   findOne(id: string) {
-    return `This action returns a #${id} volunteer`;
+    return this.volunteerModel.findById(id).lean().select({ password: 0 });
   }
 
   update(id: string, updateVolunteerDto: UpdateVolunteerDto) {

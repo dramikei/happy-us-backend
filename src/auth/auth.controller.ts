@@ -1,9 +1,10 @@
-import { Body, Controller, Delete, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Patch, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { RegisterDto } from './dto/register.dto';
+import { AuthInfo, GetAuthInfo } from './auth.middleware';
 
 @ApiTags('auth')
 @Controller('api/auth')
@@ -20,16 +21,11 @@ export class AuthController {
     return this.authService.register(registerDto);
   }
 
-  @Patch(':id')
+  @Patch('changePassword')
   changePassword(
-    @Param('id') id: string,
     @Body() changePasswordDto: ChangePasswordDto,
+    @GetAuthInfo() authInfo: AuthInfo,
   ) {
-    return this.authService.changePassword(id, changePasswordDto);
-  }
-
-  @Delete(':id')
-  logout(@Param('id') id: string) {
-    return this.authService.logout(id);
+    return this.authService.changePassword(changePasswordDto, authInfo);
   }
 }

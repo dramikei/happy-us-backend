@@ -7,6 +7,7 @@ import { UserService } from '../user/user.service';
 import { VolunteerService } from '../volunteer/volunteer.service';
 import { UserDocument } from '../user/entities/user.entity';
 import { VolunteerDocument } from '../volunteer/entities/volunteer.entity';
+import { AuthInfo, GetAuthInfo } from './auth.middleware';
 
 @Injectable()
 export class AuthService {
@@ -67,11 +68,7 @@ export class AuthService {
     return { newUser: createdEntity, accessToken: 'tbd' };
   }
 
-  changePassword(id: string, changePasswordDto: ChangePasswordDto) {
-    return `This action updates a #${id} auth`;
-  }
-
-  logout(id: string) {
-    return `This action removes a #${id} auth`;
+  changePassword(changePasswordDto: ChangePasswordDto, authInfo: AuthInfo) {
+    return `This action updates a #${authInfo.id} auth`;
   }
 }

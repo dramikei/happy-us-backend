@@ -42,7 +42,7 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(AuthMiddleware).forRoutes(
-      'api/auth',
+      'api/auth/changePassword',
       'api/appointment',
       'api/user',
       {
