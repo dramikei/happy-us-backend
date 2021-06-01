@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { ApiTags } from '@nestjs/swagger';
@@ -17,18 +25,23 @@ export class PostController {
     return this.postService.create(createPostDto, authInfo);
   }
 
-  @Get()
+  @Get('all')
   findAll() {
     return this.postService.findAll();
   }
 
-  @Get(':userId')
-  findUserPosts(@Param('userId') userId: string) {
-    return this.postService.findUserPosts(userId);
+  @Get()
+  findUserPosts(@GetAuthInfo() authInfo: AuthInfo) {
+    return this.postService.findUserPosts(authInfo);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.postService.remove(id);
+  @Patch(':postId')
+  update(@Param('postId') postId: string, @GetAuthInfo() authInfo: AuthInfo) {
+    return this.postService.update(postId, authInfo);
+  }
+
+  @Delete(':postId')
+  remove(@Param('postId') postId: string, @GetAuthInfo() authInfo: AuthInfo) {
+    return this.postService.remove(postId, authInfo);
   }
 }

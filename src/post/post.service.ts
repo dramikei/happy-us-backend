@@ -20,11 +20,15 @@ export class PostService {
     return `This action returns all post`;
   }
 
-  findUserPosts(id: string) {
-    return `This action returns a #${id} post`;
+  findUserPosts(authInfo: AuthInfo) {
+    return `This action returns a #${authInfo.id} post`;
   }
 
-  remove(id: string) {
-    return `This action removes a #${id} post`;
+  update(postId: string, authInfo: AuthInfo) {
+    return 'Updated post';
+  }
+
+  remove(postId: string, authInfo: AuthInfo) {
+    return `This action removes a #${authInfo.id} post`;
   }
 }

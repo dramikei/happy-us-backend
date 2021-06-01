@@ -1,7 +1,8 @@
-import { Body, Controller, Delete, Get, Param, Patch } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Patch } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { AuthInfo, GetAuthInfo } from '../auth/auth.middleware';
 
 @ApiTags('user')
 @ApiBearerAuth()
@@ -9,18 +10,21 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(id);
+  @Get()
+  findOne(@GetAuthInfo() authInfo: AuthInfo) {
+    return this.userService.findOne(authInfo.id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(id, updateUserDto);
+  @Patch()
+  update(
+    @GetAuthInfo() authInfo: AuthInfo,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
+    return this.userService.update(authInfo.id, updateUserDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(id);
+  @Delete()
+  remove(@GetAuthInfo() authInfo: AuthInfo) {
+    return this.userService.remove(authInfo.id);
   }
 }

@@ -1,7 +1,8 @@
-import { Body, Controller, Delete, Get, Param, Patch } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Patch } from '@nestjs/common';
 import { VolunteerService } from './volunteer.service';
 import { UpdateVolunteerDto } from './dto/update-volunteer.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { AuthInfo, GetAuthInfo } from '../auth/auth.middleware';
 
 @ApiTags('volunteer')
 @Controller('api/volunteer')
@@ -13,22 +14,17 @@ export class VolunteerController {
     return this.volunteerService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.volunteerService.findOne(id);
-  }
-
   // only admin can update details
-  @Patch(':id')
+  @Patch()
   update(
-    @Param('id') id: string,
+    @GetAuthInfo() authInfo: AuthInfo,
     @Body() updateVolunteerDto: UpdateVolunteerDto,
   ) {
-    return this.volunteerService.update(id, updateVolunteerDto);
+    return this.volunteerService.update(authInfo.id, updateVolunteerDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.volunteerService.remove(id);
+  @Delete()
+  remove(@GetAuthInfo() authInfo: AuthInfo) {
+    return this.volunteerService.remove(authInfo.id);
   }
 }
