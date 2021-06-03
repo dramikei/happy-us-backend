@@ -23,15 +23,15 @@ export class StaticContentService {
     return `This action returns all StaticContents`;
   }
 
-  getOneSection(id: string) {
-    return `This action returns a #${id} StaticContent`;
+  getOneSection(name: string) {
+    return `This action returns a #${name} StaticContent`;
   }
 
-  update(id: string, updateStaticContentDto: UpdateStaticContentDto) {
-    return `This action updates a #${id} StaticContent`;
+  update(name: string, updateStaticContentDto: UpdateStaticContentDto) {
+    return `This action updates a #${name} StaticContent`;
   }
 
-  remove(id: string) {
-    return `This action removes a #${id} StaticContent`;
+  remove(name: string) {
+    return `This action removes a #${name} StaticContent`;
   }
 }

@@ -16,7 +16,7 @@ export class AppointmentService {
     private readonly appointmentModel: Model<AppointmentDocument>,
   ) {}
 
-  create(createAppointmentDto: CreateAppointmentDto) {
+  create(createAppointmentDto: CreateAppointmentDto, userId: string) {
     return 'This action adds a new Appointment';
   }
 
