@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { IsArray, IsDate, IsNotEmpty, IsObject } from 'class-validator';
+import { IsArray, IsDateString, IsNotEmpty, IsObject } from 'class-validator';
 
 @Schema()
 export class StaticContent {
@@ -13,7 +13,7 @@ export class StaticContent {
   description: string;
 
   @IsNotEmpty()
-  @IsDate()
+  @IsDateString()
   @Prop({ required: true })
   lastUpdated: Date;
 

@@ -29,6 +29,7 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
       process.env.APP_ENV === 'DEV'
         ? process.env.DEV_DB_URL
         : process.env.PROD_DB_URL,
+      { useFindAndModify: false },
     ),
     AuthModule,
   ],
@@ -45,9 +46,14 @@ export class AppModule {
       'api/auth/changePassword',
       'api/appointment',
       'api/user',
+      'api/post/user',
       {
         path: 'api/post',
         method: RequestMethod.POST,
+      },
+      {
+        path: 'api/post',
+        method: RequestMethod.PATCH,
       },
       {
         path: 'api/post',

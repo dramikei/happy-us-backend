@@ -1,5 +1,5 @@
 import { UserSocial } from '../entities/appointment.entity';
-import { IsDate, IsMongoId, IsNotEmpty, IsObject } from 'class-validator';
+import { IsDateString, IsMongoId, IsNotEmpty, IsObject } from 'class-validator';
 
 export class CreateAppointmentDto {
   @IsNotEmpty()
@@ -14,6 +14,6 @@ export class CreateAppointmentDto {
   };
 
   @IsNotEmpty()
-  @IsDate()
+  @IsDateString()
   time: Date;
 }

@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { IsDate, IsEnum, IsNotEmpty, IsObject } from 'class-validator';
+import { IsDateString, IsEnum, IsNotEmpty, IsObject } from 'class-validator';
 
 export enum UserSocial {
   Snapchat = 'Snapchat',
@@ -29,7 +29,7 @@ export class Appointment {
   status: AppointmentStatus;
 
   @IsNotEmpty()
-  @IsDate()
+  @IsDateString()
   @Prop({ required: true })
   time: Date;
 

@@ -7,6 +7,7 @@ export enum UserType {
 
 export class LoginDto {
   @IsNotEmpty()
+  @Length(2)
   username: string;
 
   @IsNotEmpty()
