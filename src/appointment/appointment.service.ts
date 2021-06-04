@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
 import { UpdateAppointmentDto } from './dto/update-appointment.dto';
 import { InjectModel } from '@nestjs/mongoose';
@@ -8,6 +8,7 @@ import {
   AppointmentDocument,
 } from './entities/appointment.entity';
 import { AuthInfo } from '../auth/auth.middleware';
+import { UserType } from '../auth/dto/login.dto';
 
 @Injectable()
 export class AppointmentService {
@@ -16,17 +17,34 @@ export class AppointmentService {
     private readonly appointmentModel: Model<AppointmentDocument>,
   ) {}
 
-  create(createAppointmentDto: CreateAppointmentDto, userId: string) {
-    return 'This action adds a new Appointment';
+  async create(createAppointmentDto: CreateAppointmentDto, userId: string) {
+    const newAppointment = new this.appointmentModel({
+      ...createAppointmentDto,
+      userId,
+      status: 'pending',
+    });
+    return newAppointment.save();
   }
 
-  findForUser(authInfo: AuthInfo) {
-    return `This action returns a #${authInfo.id} Appointment`;
+  async findForUser(authInfo: AuthInfo) {
+    return authInfo.type === UserType.user
+      ? this.appointmentModel.find({ userId: authInfo.id })
+      : this.appointmentModel.find({ volunteerId: authInfo.id });
   }
 
-  // only volunteer can change it
-  // check for user type in req for verification
-  updateStatus(updateAppointmentDto: UpdateAppointmentDto, authInfo: AuthInfo) {
-    return `This action updates a #${updateAppointmentDto.appointmentId} Appointment`;
+  async updateStatus(
+    { appointmentId, message, status }: UpdateAppointmentDto,
+    authInfo: AuthInfo,
+  ) {
+    if (authInfo.type === UserType.user) {
+      throw new HttpException(
+        'Only volunteer can update status',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    return this.appointmentModel.findByIdAndUpdate(appointmentId, {
+      message,
+      status,
+    });
   }
 }
