@@ -41,10 +41,10 @@ export class VolunteerService {
   }
 
   async update(id: string, updateVolunteerDto: UpdateVolunteerDto) {
-    return this.volunteerModel.findByIdAndUpdate(id, updateVolunteerDto);
+    return this.volunteerModel.findByIdAndUpdate(id, updateVolunteerDto).lean();
   }
 
   async remove(id: string) {
-    return this.volunteerModel.findByIdAndRemove(id);
+    return this.volunteerModel.findByIdAndRemove(id).lean();
   }
 }
