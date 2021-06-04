@@ -10,7 +10,7 @@ export enum UserSocial {
 export enum AppointmentStatus {
   Pending = 'Pending',
   Accepted = 'Accepted',
-  Rejecte = 'Rejecte',
+  Rejected = 'Rejected',
 }
 
 @Schema()
@@ -39,7 +39,7 @@ export class Appointment {
   @Prop({ required: true })
   volunteerId: string;
 
-  @Prop({ required: true })
+  @Prop({ required: false })
   message: string;
 }
 
