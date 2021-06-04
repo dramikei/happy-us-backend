@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { PostService } from './post.service';
 import { PostController } from './post.controller';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -11,8 +11,9 @@ import { UserModule } from '../user/user.module';
     MongooseModule.forFeatureAsync([
       registerMongoSchema(PostSchema, Post.name),
     ]),
-    UserModule,
+    forwardRef(() => UserModule),
   ],
+  exports: [PostService],
   controllers: [PostController],
   providers: [PostService],
 })

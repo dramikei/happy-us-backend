@@ -1,9 +1,10 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserController } from './user.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from './entities/user.entity';
 import { registerMongoSchema } from '../utils/register-mongo-schema';
+import { PostModule } from '../post/post.module';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { registerMongoSchema } from '../utils/register-mongo-schema';
     MongooseModule.forFeatureAsync([
       registerMongoSchema(UserSchema, User.name),
     ]),
+    forwardRef(() => PostModule),
   ],
   exports: [UserService],
   controllers: [UserController],

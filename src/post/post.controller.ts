@@ -1,15 +1,7 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Patch, Post } from '@nestjs/common';
 import { PostService } from './post.service';
-import { CreatePostDto } from './dto/create-post.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { Post as PostDto } from './entities/post.entity';
 import { AuthInfo, GetAuthInfo } from '../auth/auth.middleware';
 
 @ApiTags('post')
@@ -18,30 +10,33 @@ export class PostController {
   constructor(private readonly postService: PostService) {}
 
   @Post()
-  create(
-    @Body() createPostDto: CreatePostDto,
-    @GetAuthInfo() authInfo: AuthInfo,
-  ) {
+  create(@Body() createPostDto: PostDto, @GetAuthInfo() authInfo: AuthInfo) {
     return this.postService.create(createPostDto, authInfo);
   }
 
-  @Get('all')
+  @Get()
   findAll() {
     return this.postService.findAll();
   }
 
-  @Get()
+  @Get('user')
   findUserPosts(@GetAuthInfo() authInfo: AuthInfo) {
     return this.postService.findUserPosts(authInfo);
   }
 
-  @Patch(':postId')
-  update(@Param('postId') postId: string, @GetAuthInfo() authInfo: AuthInfo) {
-    return this.postService.update(postId, authInfo);
+  @Patch()
+  updateLikeCount(
+    @Body() updatePostDto: { postId: string; event: 'add' | 'remove' },
+    @GetAuthInfo() authInfo: AuthInfo,
+  ) {
+    return this.postService.updateLikeCount(updatePostDto, authInfo);
   }
 
-  @Delete(':postId')
-  remove(@Param('postId') postId: string, @GetAuthInfo() authInfo: AuthInfo) {
-    return this.postService.remove(postId, authInfo);
+  @Delete()
+  remove(
+    @Body() deletePostDto: { postId: string },
+    @GetAuthInfo() authInfo: AuthInfo,
+  ) {
+    return this.postService.remove(deletePostDto.postId, authInfo);
   }
 }

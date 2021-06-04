@@ -1,13 +1,22 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  forwardRef,
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from './entities/user.entity';
-import { Model } from 'mongoose';
+import { ClientSession, LeanDocument, Model } from 'mongoose';
+import { PostService } from '../post/post.service';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
+    @Inject(forwardRef(() => PostService))
+    private readonly postService: PostService,
   ) {}
 
   async create(createUserDto: User) {
@@ -28,18 +37,39 @@ export class UserService {
     return this.userModel.findOne({ username }).lean();
   }
 
-  async findOne(id: string, includePassword?: boolean) {
-    return this.userModel
-      .findById(id)
-      .lean()
-      .select({ password: includePassword ? 1 : 0 });
+  async findOne(
+    id: string,
+    includePassword?: boolean,
+    heavyDoc?: boolean,
+  ): Promise<UserDocument | LeanDocument<UserDocument>> {
+    return heavyDoc
+      ? this.userModel
+          .findById(id)
+          .select({ password: includePassword ? 1 : 0 })
+      : this.userModel
+          .findById(id)
+          .lean()
+          .select({ password: includePassword ? 1 : 0 });
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto) {
-    return this.userModel.findByIdAndUpdate(id, updateUserDto);
+  async update(
+    id: string,
+    updateUserDto: UpdateUserDto,
+    session?: ClientSession,
+  ) {
+    return this.userModel.findByIdAndUpdate(
+      id,
+      updateUserDto,
+      session && { session },
+    );
   }
 
   async remove(id: string) {
-    return this.userModel.findByIdAndRemove(id);
+    const user = await this.findOne(id);
+    if (!user) {
+      throw new HttpException('User does not exist', HttpStatus.NOT_FOUND);
+    }
+    await this.postService.removeAllOfUser(user.posts);
+    return this.userModel.findByIdAndDelete(id);
   }
 }
