@@ -11,8 +11,5 @@ export class UpdateAppointmentDto {
   appointmentId: string;
 
   @IsNotEmpty()
-  rejectMessage: string;
-
-  @IsNotEmpty()
-  acceptMessage: string;
+  message: string;
 }

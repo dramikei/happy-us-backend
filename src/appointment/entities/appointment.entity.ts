@@ -34,16 +34,13 @@ export class Appointment {
   time: Date;
 
   @Prop({ required: true })
-  rejectMessage: string;
-
-  @Prop({ required: true })
   userId: string;
 
   @Prop({ required: true })
   volunteerId: string;
 
   @Prop({ required: true })
-  acceptMessage: string;
+  message: string;
 }
 
 export type AppointmentDocument = Appointment & Document;
