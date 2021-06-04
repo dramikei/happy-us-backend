@@ -23,7 +23,7 @@ export class VolunteerController {
     return this.volunteerService.update(authInfo.id, updateVolunteerDto);
   }
 
-  // can only be updated with admin permission
+  // can only be deleted with admin permission
   @Delete()
   remove(@GetAuthInfo() authInfo: AuthInfo) {
     return this.volunteerService.remove(authInfo.id);
