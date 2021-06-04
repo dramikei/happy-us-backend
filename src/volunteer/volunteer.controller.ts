@@ -14,7 +14,7 @@ export class VolunteerController {
     return this.volunteerService.findAll();
   }
 
-  // only admin can update details
+  // can only be updated with admin permission
   @Patch()
   update(
     @GetAuthInfo() authInfo: AuthInfo,
@@ -23,6 +23,7 @@ export class VolunteerController {
     return this.volunteerService.update(authInfo.id, updateVolunteerDto);
   }
 
+  // can only be updated with admin permission
   @Delete()
   remove(@GetAuthInfo() authInfo: AuthInfo) {
     return this.volunteerService.remove(authInfo.id);
