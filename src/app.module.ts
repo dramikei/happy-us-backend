@@ -1,7 +1,6 @@
 import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { StaticContentModule } from './static-content/static-content.module';
 import { PostModule } from './post/post.module';
 import { VolunteerModule } from './volunteer/volunteer.module';
 import { UserModule } from './user/user.module';
@@ -20,7 +19,6 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
     VolunteerModule,
     PostModule,
     AppointmentModule,
-    StaticContentModule,
     ThrottlerModule.forRoot({
       ttl: 60,
       limit: 100,
