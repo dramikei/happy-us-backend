@@ -12,6 +12,7 @@ import { AuthModule } from './auth/auth.module';
 import { AuthMiddleware } from './auth/auth.middleware';
 import { CheckAdminMiddleware } from './utils/check-admin.middleware';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { NotificationModule } from './notification/notification.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
       { useFindAndModify: false },
     ),
     AuthModule,
+    NotificationModule,
   ],
   controllers: [AppController],
   providers: [
@@ -43,6 +45,7 @@ export class AppModule {
     consumer.apply(AuthMiddleware).forRoutes(
       'api/auth/changePassword',
       'api/appointment',
+      'api/notification',
       'api/user',
       'api/post/user',
       {

@@ -9,12 +9,14 @@ import {
 } from './entities/appointment.entity';
 import { AuthInfo } from '../auth/auth.middleware';
 import { UserType } from '../auth/dto/login.dto';
+import { NotificationService } from '../notification/notification.service';
 
 @Injectable()
 export class AppointmentService {
   constructor(
     @InjectModel(Appointment.name)
     private readonly appointmentModel: Model<AppointmentDocument>,
+    private readonly notificationService: NotificationService,
   ) {}
 
   async create(createAppointmentDto: CreateAppointmentDto, userId: string) {
@@ -23,6 +25,7 @@ export class AppointmentService {
       userId,
       status: 'pending',
     });
+    // await this.notificationService.create({});
     return newAppointment.save();
   }
 
@@ -36,6 +39,7 @@ export class AppointmentService {
     { appointmentId, message, status }: UpdateAppointmentDto,
     authInfo: AuthInfo,
   ) {
+    // await this.notificationService.create({});
     if (authInfo.type === UserType.user) {
       throw new HttpException(
         'Only volunteer can update status',

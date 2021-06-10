@@ -12,6 +12,7 @@ import { Post, PostDocument } from './entities/post.entity';
 import { AuthInfo } from '../auth/auth.middleware';
 import { UserService } from '../user/user.service';
 import { UserDocument } from '../user/entities/user.entity';
+import { NotificationService } from '../notification/notification.service';
 
 @Injectable()
 export class PostService {
@@ -20,6 +21,7 @@ export class PostService {
     private readonly postModel: Model<PostDocument>,
     @Inject(forwardRef(() => UserService))
     private readonly userService: UserService,
+    private readonly notificationService: NotificationService,
   ) {}
 
   async create(createPostDto: Post, authInfo: AuthInfo) {
@@ -76,6 +78,8 @@ export class PostService {
     authInfo: AuthInfo,
   ) {
     const existingPost = await this.postModel.findById(postId).lean();
+    // todo: create notification on update
+    // await this.notificationService.create();
     if (event === 'remove') {
       if (existingPost === null)
         throw new HttpException(
