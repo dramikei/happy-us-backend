@@ -14,6 +14,6 @@ export class NotificationController {
 
   @Get()
   findByUser(@GetAuthInfo() authInfo: AuthInfo) {
-    return this.notificationService.findByUser(+authInfo.id);
+    return this.notificationService.findByUser(authInfo.id);
   }
 }
