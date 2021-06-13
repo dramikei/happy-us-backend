@@ -25,7 +25,13 @@ export class AppointmentService {
       userId,
       status: 'pending',
     });
-    // await this.notificationService.create({});
+    await this.notificationService.create({
+      redirectTo: `/appointments/${newAppointment._id}`,
+      title: 'New Appointment Alert',
+      description: `Hey good person, check out this appointment from ${createAppointmentDto.userSocial.id}`,
+      userId,
+    });
+    // todo: send firebase notification
     return newAppointment.save();
   }
 
@@ -39,13 +45,19 @@ export class AppointmentService {
     { appointmentId, message, status }: UpdateAppointmentDto,
     authInfo: AuthInfo,
   ) {
-    // await this.notificationService.create({});
     if (authInfo.type === UserType.user) {
       throw new HttpException(
         'Only volunteer can update status',
         HttpStatus.BAD_REQUEST,
       );
     }
+    await this.notificationService.create({
+      redirectTo: `/appointments/${appointmentId}`,
+      title: `Appointment Status: ${status}`,
+      description: `Message from out volunteer: ${message}`,
+      userId: authInfo.id,
+    });
+    // todo: send firebase notification
     return this.appointmentModel.findByIdAndUpdate(appointmentId, {
       message,
       status,

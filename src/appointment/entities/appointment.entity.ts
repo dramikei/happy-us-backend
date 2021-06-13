@@ -1,6 +1,13 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { IsDateString, IsEnum, IsNotEmpty, IsObject } from 'class-validator';
+import {
+  IsDateString,
+  IsEnum,
+  IsMongoId,
+  IsNotEmpty,
+  IsObject,
+  Length,
+} from 'class-validator';
 
 export enum UserSocial {
   Snapchat = 'Snapchat',
@@ -34,12 +41,15 @@ export class Appointment {
   time: Date;
 
   @Prop({ required: true })
+  @IsMongoId()
   userId: string;
 
   @Prop({ required: true })
+  @IsMongoId()
   volunteerId: string;
 
   @Prop({ required: false })
+  @Length(1, 30)
   message: string;
 }
 
