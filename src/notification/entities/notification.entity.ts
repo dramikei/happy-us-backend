@@ -12,7 +12,17 @@ export class Notification {
   @IsNotEmpty()
   @IsString()
   @Prop({ type: String, required: true })
-  message: string;
+  redirectTo: string; // appointments/{appointment_id}
+
+  @IsNotEmpty()
+  @IsString()
+  @Prop({ type: String, required: true })
+  title: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @Prop({ type: String, required: true })
+  description: string;
 }
 
 export type NotificationDocument = Notification & Document;

@@ -5,7 +5,6 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { registerMongoSchema } from '../utils/register-mongo-schema';
 import { Post, PostSchema } from './entities/post.entity';
 import { UserModule } from '../user/user.module';
-import { NotificationService } from '../notification/notification.service';
 
 @Module({
   imports: [
@@ -13,7 +12,6 @@ import { NotificationService } from '../notification/notification.service';
       registerMongoSchema(PostSchema, Post.name),
     ]),
     forwardRef(() => UserModule),
-    NotificationService,
   ],
   exports: [PostService],
   controllers: [PostController],
