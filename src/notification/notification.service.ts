@@ -18,6 +18,6 @@ export class NotificationService {
   }
 
   findByUser(userId: string) {
-    return this.notificationModel.find({ userId });
+    return this.notificationModel.find({ userId }).sort({ time: -1 }).lean();
   }
 }

@@ -59,7 +59,7 @@ export class PostService {
   }
 
   async findAll() {
-    return this.postModel.find().lean();
+    return this.postModel.find().sort({ time: -1 }).lean();
   }
 
   async findUserPosts(authInfo: AuthInfo) {
