@@ -1,7 +1,13 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import { Document } from 'mongoose';
-import { IsArray, IsDateString, IsNotEmpty, Length } from 'class-validator';
+import {
+  IsArray,
+  IsDateString,
+  IsMongoId,
+  IsNotEmpty,
+  Length,
+} from 'class-validator';
 
 @Schema()
 export class Post {
@@ -19,6 +25,11 @@ export class Post {
   @IsDateString()
   @Prop({ required: true })
   time: Date;
+
+  @IsNotEmpty()
+  @IsMongoId()
+  @Prop({ required: true })
+  creatorId: string;
 
   @IsNotEmpty()
   @IsArray()

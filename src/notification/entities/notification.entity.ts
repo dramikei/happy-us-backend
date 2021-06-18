@@ -1,6 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { IsDateString, IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsBoolean,
+  IsDateString,
+  IsEmpty,
+  IsNotEmpty,
+  IsString,
+} from 'class-validator';
 
 @Schema()
 export class Notification {
@@ -23,6 +29,11 @@ export class Notification {
   @IsString()
   @Prop({ type: String, required: true })
   description: string;
+
+  @IsEmpty()
+  @IsBoolean()
+  @Prop({ type: Boolean, required: true })
+  seen: boolean;
 
   @IsNotEmpty()
   @IsDateString()

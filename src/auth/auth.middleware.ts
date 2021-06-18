@@ -59,6 +59,12 @@ export class AuthMiddleware implements NestMiddleware {
       ) as DecodedToken;
       req.info = { id, type };
     } catch (err) {
+      if (!refreshToken) {
+        throw new HttpException(
+          'Refresh token not sent and access token expired',
+          HttpStatus.UNAUTHORIZED,
+        );
+      }
       const { id, type } = jwt.verify(
         refreshToken,
         process.env.JWT_REFRESH_SECRET,
