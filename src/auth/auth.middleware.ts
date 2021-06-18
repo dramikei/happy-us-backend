@@ -5,14 +5,6 @@ import {
   Injectable,
   NestMiddleware,
 } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import {
-  AccessBlacklist,
-  AccessBlacklistDocument,
-  RefreshRevoked,
-  RefreshRevokedDocument,
-} from './entities/auth.entity';
 import * as jwt from 'jsonwebtoken';
 import { ExecutionContextHost } from '@nestjs/core/helpers/execution-context-host';
 import { getTokens } from '../utils/get-tokens';
@@ -32,13 +24,6 @@ export type AuthInfo = {
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
-  constructor(
-    @InjectModel(AccessBlacklist.name)
-    private readonly accessBlacklistModal: Model<AccessBlacklistDocument>,
-    @InjectModel(RefreshRevoked.name)
-    private readonly refreshRevokedModel: Model<RefreshRevokedDocument>,
-  ) {}
-
   async use(req, res, next) {
     if (req.method === 'OPTIONS') {
       next();
