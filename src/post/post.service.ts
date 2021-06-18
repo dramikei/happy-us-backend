@@ -84,16 +84,13 @@ export class PostService {
           'The post does not exist',
           HttpStatus.BAD_REQUEST,
         );
-      await this.notificationService.create({
-        redirectTo: `/post/${existingPost._id}`,
-        title: 'Someone liked your post',
-        time: new Date(),
-        description: 'Hey someone just saw your post, showered their love!!',
-        userId: authInfo.id,
-      });
-      await this.postModel.findByIdAndUpdate(postId, {
-        likedBy: existingPost.likedBy?.filter((id) => id !== authInfo.id),
-      });
+
+      await this.postModel.updateOne(
+        { _id: postId },
+        {
+          likedBy: existingPost.likedBy?.filter((id) => id !== authInfo.id),
+        },
+      );
     } else {
       const alreadyLiked = existingPost.likedBy
         .map(String)
@@ -105,9 +102,20 @@ export class PostService {
           HttpStatus.BAD_REQUEST,
         );
       }
-      await this.postModel.findByIdAndUpdate(postId, {
-        likedBy: [...existingPost.likedBy, authInfo.id],
+      await this.notificationService.create({
+        redirectTo: `/post/${existingPost._id}`,
+        title: 'Someone liked your post',
+        time: new Date(),
+        seen: false,
+        description: 'Hey someone just saw your post and showered their love!!',
+        userId: existingPost.creatorId,
       });
+      return this.postModel.updateOne(
+        { _id: postId },
+        {
+          likedBy: [...existingPost.likedBy, authInfo.id],
+        },
+      );
     }
   }
 

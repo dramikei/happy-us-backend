@@ -1,9 +1,9 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { NotificationService } from './notification.service';
 import { AuthInfo, GetAuthInfo } from '../auth/auth.middleware';
 import { Notification } from './entities/notification.entity';
 
-@Controller('notification')
+@Controller('api/notification')
 export class NotificationController {
   constructor(private readonly notificationService: NotificationService) {}
 
@@ -15,5 +15,10 @@ export class NotificationController {
   @Get()
   findByUser(@GetAuthInfo() authInfo: AuthInfo) {
     return this.notificationService.findByUser(authInfo.id);
+  }
+
+  @Get('/markSeen/:id')
+  markSeen(@Param(':id') notificationId, @GetAuthInfo() authInfo: AuthInfo) {
+    return this.notificationService.markSeen(notificationId, authInfo.id);
   }
 }

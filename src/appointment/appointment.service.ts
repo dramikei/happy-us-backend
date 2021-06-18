@@ -25,12 +25,14 @@ export class AppointmentService {
       userId,
       status: 'pending',
     });
+    // this is meant for volunteer
     await this.notificationService.create({
       redirectTo: `/appointments/${newAppointment._id}`,
       title: 'New Appointment Alert',
       time: new Date(),
+      seen: false,
       description: `Hey good person, check out this appointment from ${createAppointmentDto.userSocial.id}`,
-      userId,
+      userId: createAppointmentDto.volunteerId,
     });
     // todo: send firebase notification
     return newAppointment.save();
@@ -52,17 +54,27 @@ export class AppointmentService {
         HttpStatus.BAD_REQUEST,
       );
     }
+    const existingAppointment = await this.appointmentModel
+      .findById(appointmentId)
+      .lean();
+    if (!existingAppointment)
+      throw new HttpException('Invalid Appointment ID', HttpStatus.NOT_FOUND);
+    // this is meant for user
     await this.notificationService.create({
       redirectTo: `/appointments/${appointmentId}`,
       title: `Appointment Status: ${status}`,
       time: new Date(),
+      seen: false,
       description: `Message from our volunteer: ${message}`,
-      userId: authInfo.id,
+      userId: existingAppointment.userId,
     });
     // todo: send firebase notification
-    return this.appointmentModel.findByIdAndUpdate(appointmentId, {
-      message,
-      status,
-    });
+    return this.appointmentModel.updateOne(
+      { _id: appointmentId },
+      {
+        message,
+        status,
+      },
+    );
   }
 }
