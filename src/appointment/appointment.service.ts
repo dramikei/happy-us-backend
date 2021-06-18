@@ -56,7 +56,7 @@ export class AppointmentService {
       redirectTo: `/appointments/${appointmentId}`,
       title: `Appointment Status: ${status}`,
       time: new Date(),
-      description: `Message from out volunteer: ${message}`,
+      description: `Message from our volunteer: ${message}`,
       userId: authInfo.id,
     });
     // todo: send firebase notification

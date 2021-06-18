@@ -12,6 +12,7 @@ import { Post, PostDocument } from './entities/post.entity';
 import { AuthInfo } from '../auth/auth.middleware';
 import { UserService } from '../user/user.service';
 import { UserDocument } from '../user/entities/user.entity';
+import { NotificationService } from '../notification/notification.service';
 
 @Injectable()
 export class PostService {
@@ -20,6 +21,7 @@ export class PostService {
     private readonly postModel: Model<PostDocument>,
     @Inject(forwardRef(() => UserService))
     private readonly userService: UserService,
+    private readonly notificationService: NotificationService,
   ) {}
 
   async create(createPostDto: Post, authInfo: AuthInfo) {
@@ -82,6 +84,13 @@ export class PostService {
           'The post does not exist',
           HttpStatus.BAD_REQUEST,
         );
+      await this.notificationService.create({
+        redirectTo: `/post/${existingPost._id}`,
+        title: 'Someone liked your post',
+        time: new Date(),
+        description: 'Hey someone just saw your post, showered their love!!',
+        userId: authInfo.id,
+      });
       await this.postModel.findByIdAndUpdate(postId, {
         likedBy: existingPost.likedBy?.filter((id) => id !== authInfo.id),
       });
