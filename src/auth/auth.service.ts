@@ -86,9 +86,18 @@ export class AuthService {
             imageUrl: registerDto.imageUrl,
           });
 
-    createdEntity.password = 'lol, it hidden from response HACKERRR';
+    const docValue =
+      registerDto.type === UserType.user
+        ? { posts: [] }
+        : {
+            hobbies: registerDto.hobbies,
+            aboutMe: registerDto.aboutMe,
+            imageUrl: registerDto.imageUrl,
+          };
+
     return {
-      ...createdEntity._doc,
+      ...baseUserFields,
+      ...docValue,
       ...getTokens({
         id: createdEntity['_id'],
         type: registerDto.type,
