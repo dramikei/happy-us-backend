@@ -38,6 +38,7 @@ export class AuthService {
         id: authenticatedEntity['_id'],
         type: loginDto.type,
       }),
+      type: loginDto.type,
       message: `Successfully logged in the ${loginDto.type}`,
     };
   }
@@ -92,6 +93,7 @@ export class AuthService {
         id: createdEntity['_id'],
         type: registerDto.type,
       }),
+      type: registerDto.type,
       message: `Successfully created new ${registerDto.type}`,
     };
   }
