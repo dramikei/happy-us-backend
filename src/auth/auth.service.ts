@@ -96,6 +96,7 @@ export class AuthService {
           };
 
     return {
+      _id: createdEntity._id,
       ...baseUserFields,
       ...docValue,
       ...getTokens({
