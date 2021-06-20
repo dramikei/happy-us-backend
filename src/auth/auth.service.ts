@@ -33,7 +33,7 @@ export class AuthService {
       throw new HttpException('Wrong Password', HttpStatus.FORBIDDEN);
     }
     return {
-      newUser: authenticatedEntity,
+      ...authenticatedEntity,
       ...getTokens({
         id: authenticatedEntity['_id'],
         type: loginDto.type,
@@ -87,7 +87,7 @@ export class AuthService {
 
     createdEntity.password = 'lol, it hidden from response HACKERRR';
     return {
-      newUser: createdEntity,
+      ...createdEntity,
       ...getTokens({
         id: createdEntity['_id'],
         type: registerDto.type,
