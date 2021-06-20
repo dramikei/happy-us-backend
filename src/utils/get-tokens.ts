@@ -5,7 +5,7 @@ import { UserType } from '../auth/dto/login.dto';
 export const getTokens = (payload: {
   id: string;
   type: UserType;
-}): { newAccessToken: string; newRefreshToken: string } => {
+}): { accessToken: string; refreshToken: string } => {
   try {
     const newAccessToken = jwt.sign(payload, process.env.JWT_SECRET, {
       expiresIn: '1hr',
@@ -13,7 +13,7 @@ export const getTokens = (payload: {
     const newRefreshToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET, {
       expiresIn: '30d',
     });
-    return { newAccessToken, newRefreshToken };
+    return { accessToken: newAccessToken, refreshToken: newRefreshToken };
   } catch (err) {
     throw new HttpException(
       'Authentication failed, please try again later.',

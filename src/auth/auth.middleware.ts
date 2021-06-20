@@ -54,10 +54,11 @@ export class AuthMiddleware implements NestMiddleware {
         refreshToken,
         process.env.JWT_REFRESH_SECRET,
       ) as DecodedToken;
-      const { newAccessToken, newRefreshToken } = getTokens({
-        id,
-        type,
-      });
+      const { accessToken: newAccessToken, refreshToken: newRefreshToken } =
+        getTokens({
+          id,
+          type,
+        });
       req.info = {
         id,
         type,
