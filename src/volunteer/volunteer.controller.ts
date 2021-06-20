@@ -10,6 +10,11 @@ export class VolunteerController {
   constructor(private readonly volunteerService: VolunteerService) {}
 
   @Get()
+  findOne(@GetAuthInfo() authInfo: AuthInfo) {
+    return this.volunteerService.findOne(authInfo.id);
+  }
+
+  @Get('all')
   findAll() {
     return this.volunteerService.findAll();
   }
