@@ -57,6 +57,10 @@ export class AppModule {
         method: RequestMethod.PATCH,
       },
       {
+        path: 'api/volunteer',
+        method: RequestMethod.GET,
+      },
+      {
         path: 'api/post',
         method: RequestMethod.DELETE,
       },
