@@ -88,7 +88,7 @@ export class AuthService {
 
     createdEntity.password = 'lol, it hidden from response HACKERRR';
     return {
-      ...createdEntity,
+      ...createdEntity._doc,
       ...getTokens({
         id: createdEntity['_id'],
         type: registerDto.type,
