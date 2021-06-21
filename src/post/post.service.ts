@@ -88,7 +88,9 @@ export class PostService {
       await this.postModel.updateOne(
         { _id: postId },
         {
-          likedBy: existingPost.likedBy?.filter((id) => id !== authInfo.id),
+          likedBy: existingPost.likedBy
+            ?.map(String)
+            .filter((id) => id !== authInfo.id),
         },
       );
     } else {
