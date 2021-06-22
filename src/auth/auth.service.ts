@@ -64,6 +64,15 @@ export class AuthService {
         HttpStatus.BAD_REQUEST,
       );
     }
+
+    const existingUser =
+      registerDto.type === UserType.user
+        ? await this.userService.findByUsername(registerDto.username)
+        : await this.volunteerService.findByUsername(registerDto.username);
+    if (!existingUser) {
+      throw new HttpException('User does not exist', HttpStatus.UNAUTHORIZED);
+    }
+
     const salt = bcrypt.genSaltSync(12);
     const baseUserFields = {
       age: registerDto.age,

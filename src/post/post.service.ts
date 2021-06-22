@@ -65,12 +65,10 @@ export class PostService {
   }
 
   async findUserPosts(authInfo: AuthInfo) {
-    const user = (await this.userService.findOne(
-      authInfo.id,
-      false,
-      true,
-    )) as UserDocument;
-    return user.populate('posts');
+    return this.postModel
+      .find({ creatorId: authInfo.id })
+      .sort({ time: -1 })
+      .lean();
   }
 
   async updateLikeCount(

@@ -57,6 +57,16 @@ export class UserService {
     updateUserDto: UpdateUserDto,
     session?: ClientSession,
   ) {
+    const existingUsername = await this.userModel
+      .findOne({ username: updateUserDto.username })
+      .select({ username: 1, password: 0, posts: 0, _id: 0, fcmToken: 0 })
+      .lean();
+    if (existingUsername) {
+      throw new HttpException(
+        'User with this name already exists',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
     return this.userModel.findByIdAndUpdate(
       id,
       updateUserDto,
