@@ -59,7 +59,6 @@ export class UserService {
   ) {
     const existingUsername = await this.userModel
       .findOne({ username: updateUserDto.username })
-      .select({ username: 1, password: 0, posts: 0, _id: 0, fcmToken: 0 })
       .lean();
     if (existingUsername) {
       throw new HttpException(
@@ -70,7 +69,12 @@ export class UserService {
     return this.userModel.findByIdAndUpdate(
       id,
       updateUserDto,
-      session && { session },
+      session
+        ? {
+            session,
+            new: true,
+          }
+        : { new: true },
     );
   }
 

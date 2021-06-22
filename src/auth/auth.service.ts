@@ -69,8 +69,11 @@ export class AuthService {
       registerDto.type === UserType.user
         ? await this.userService.findByUsername(registerDto.username)
         : await this.volunteerService.findByUsername(registerDto.username);
-    if (!existingUser) {
-      throw new HttpException('User does not exist', HttpStatus.UNAUTHORIZED);
+    if (existingUser) {
+      throw new HttpException(
+        'User with this name already exists',
+        HttpStatus.UNAUTHORIZED,
+      );
     }
 
     const salt = bcrypt.genSaltSync(12);
