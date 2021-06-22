@@ -40,8 +40,10 @@ export class AppointmentService {
 
   async findForUser(authInfo: AuthInfo) {
     return authInfo.type === UserType.user
-      ? this.appointmentModel.find({ userId: authInfo.id })
-      : this.appointmentModel.find({ volunteerId: authInfo.id });
+      ? this.appointmentModel.find({ userId: authInfo.id }).sort({ time: -1 })
+      : this.appointmentModel
+          .find({ volunteerId: authInfo.id })
+          .sort({ time: -1 });
   }
 
   async updateStatus(
