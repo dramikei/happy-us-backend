@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Patch, Post } from '@nestjs/common';
 import { NotificationService } from './notification.service';
 import { AuthInfo, GetAuthInfo } from '../auth/auth.middleware';
 import { Notification } from './entities/notification.entity';
@@ -17,8 +17,14 @@ export class NotificationController {
     return this.notificationService.findByUser(authInfo.id);
   }
 
-  @Get('/markSeen/:id')
-  markSeen(@Param(':id') notificationId, @GetAuthInfo() authInfo: AuthInfo) {
-    return this.notificationService.markSeen(notificationId, authInfo.id);
+  @Patch('/markSeen')
+  markSeen(
+    @Body() updateNotificationDto: { notificationId: string },
+    @GetAuthInfo() authInfo: AuthInfo,
+  ) {
+    return this.notificationService.markSeen(
+      updateNotificationDto.notificationId,
+      authInfo.id,
+    );
   }
 }

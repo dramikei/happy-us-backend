@@ -46,6 +46,7 @@ export class AppModule {
       'api/auth/changePassword',
       'api/appointment',
       'api/notification',
+      'api/notification/markSeen',
       'api/user',
       'api/post/user',
       {
