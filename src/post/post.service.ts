@@ -12,7 +12,6 @@ import { Post, PostDocument } from './entities/post.entity';
 import { AuthInfo } from '../auth/auth.middleware';
 import { UserService } from '../user/user.service';
 import { UserDocument } from '../user/entities/user.entity';
-import { NotificationService } from '../notification/notification.service';
 
 @Injectable()
 export class PostService {
@@ -21,7 +20,6 @@ export class PostService {
     private readonly postModel: Model<PostDocument>,
     @Inject(forwardRef(() => UserService))
     private readonly userService: UserService,
-    private readonly notificationService: NotificationService,
   ) {}
 
   async create(createPostDto: Post, authInfo: AuthInfo) {
@@ -102,14 +100,6 @@ export class PostService {
           HttpStatus.BAD_REQUEST,
         );
       }
-      await this.notificationService.create({
-        redirectTo: `/post/${existingPost._id}`,
-        title: 'Someone liked your post',
-        time: new Date(),
-        seen: false,
-        description: 'Hey someone just saw your post and showered their love!!',
-        userId: existingPost.creatorId,
-      });
       return this.postModel.updateOne(
         { _id: postId },
         {
@@ -127,6 +117,12 @@ export class PostService {
     )) as UserDocument;
     if (!user) {
       throw new HttpException('User does not exist', HttpStatus.NOT_FOUND);
+    }
+    if (!user.posts.map(String).includes(postId)) {
+      throw new HttpException(
+        'Not authorized to delete this post',
+        HttpStatus.UNAUTHORIZED,
+      );
     }
     const session = await this.postModel.startSession();
     await session.startTransaction();
