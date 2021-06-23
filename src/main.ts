@@ -55,7 +55,7 @@ const bootstrap = async () => {
     customSiteTitle: 'HappyUs API Docs',
   });
 
-  await app.listen(process.env.PORT || process.env.APP_PORT);
+  await app.listen(process.env.PORT || process.env.APP_PORT, '0.0.0.0');
 };
 
 bootstrap().then(() => {
