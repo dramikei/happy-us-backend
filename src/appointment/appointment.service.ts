@@ -71,12 +71,17 @@ export class AppointmentService {
       userId: existingAppointment.userId,
     });
     // todo: send firebase notification
-    return this.appointmentModel.updateOne(
+    await this.appointmentModel.updateOne(
       { _id: appointmentId },
       {
         message,
         status,
       },
     );
+    return {
+      ...existingAppointment,
+      message,
+      status,
+    };
   }
 }
