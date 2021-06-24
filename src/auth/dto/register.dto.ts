@@ -4,7 +4,6 @@ import {
   ArrayUnique,
   IsArray,
   IsEnum,
-  IsFirebasePushId,
   IsNotEmpty,
   IsNumber,
   IsObject,
@@ -28,7 +27,6 @@ export class RegisterDto {
   username: string;
 
   @IsOptional()
-  @IsFirebasePushId()
   fcmToken: string;
 
   @IsNotEmpty()

@@ -3,7 +3,6 @@ import * as mongoose from 'mongoose';
 import { Document } from 'mongoose';
 import {
   IsArray,
-  IsFirebasePushId,
   IsNotEmpty,
   IsNumber,
   IsObject,
@@ -20,7 +19,6 @@ export class Base {
   username: string;
 
   @IsOptional()
-  @IsFirebasePushId()
   @Prop({ type: String })
   fcmToken: string;
 
