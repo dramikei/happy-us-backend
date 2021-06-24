@@ -17,4 +17,7 @@ export class LoginDto {
   @IsNotEmpty()
   @IsEnum(UserType)
   type: UserType;
+
+  @IsNotEmpty()
+  fcmToken: string;
 }

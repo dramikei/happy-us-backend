@@ -32,6 +32,15 @@ export class AuthService {
     if (!passwordCorrect) {
       throw new HttpException('Wrong Password', HttpStatus.FORBIDDEN);
     }
+
+    loginDto.type === UserType.user
+      ? await this.userService.update(authenticatedEntity.id, {
+          fcmToken: loginDto.fcmToken,
+        })
+      : await this.volunteerService.update(authenticatedEntity.id, {
+          fcmToken: loginDto.fcmToken,
+        });
+
     return {
       ...authenticatedEntity,
       ...getTokens({
