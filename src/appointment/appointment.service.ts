@@ -10,6 +10,9 @@ import {
 import { AuthInfo } from '../auth/auth.middleware';
 import { UserType } from '../auth/dto/login.dto';
 import { NotificationService } from '../notification/notification.service';
+import axios from 'axios';
+import { VolunteerService } from '../volunteer/volunteer.service';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class AppointmentService {
@@ -17,6 +20,8 @@ export class AppointmentService {
     @InjectModel(Appointment.name)
     private readonly appointmentModel: Model<AppointmentDocument>,
     private readonly notificationService: NotificationService,
+    private readonly volunteerService: VolunteerService,
+    private readonly userService: UserService,
   ) {}
 
   async create(createAppointmentDto: CreateAppointmentDto, userId: string) {
@@ -25,6 +30,15 @@ export class AppointmentService {
       userId,
       status: 'pending',
     });
+    const volunteer = await this.volunteerService.findOne(
+      createAppointmentDto.volunteerId,
+    );
+    if (!volunteer) {
+      throw new HttpException(
+        'Volunteer for this Id, not found',
+        HttpStatus.NOT_FOUND,
+      );
+    }
     // this is meant for volunteer
     await this.notificationService.create({
       redirectTo: `/appointments/${newAppointment._id}`,
@@ -34,7 +48,14 @@ export class AppointmentService {
       description: `Hey good person, check out this appointment from ${createAppointmentDto.userSocial.id}`,
       userId: createAppointmentDto.volunteerId,
     });
-    // todo: send firebase notification
+
+    await axios.post('https://fcm.googleapis.com/fcm/send', {
+      to: volunteer.fcmToken,
+      notification: {
+        title: 'New Appointment Alert',
+        body: `Hey good person, check out this appointment from ${createAppointmentDto.userSocial.id}`,
+      },
+    });
     return newAppointment.save();
   }
 
@@ -61,6 +82,14 @@ export class AppointmentService {
       .lean();
     if (!existingAppointment)
       throw new HttpException('Invalid Appointment ID', HttpStatus.NOT_FOUND);
+
+    const user = await this.userService.findOne(existingAppointment.userId);
+    if (!user) {
+      throw new HttpException(
+        'User for this Id, not found.',
+        HttpStatus.NOT_FOUND,
+      );
+    }
     // this is meant for user
     await this.notificationService.create({
       redirectTo: `/appointments/${appointmentId}`,
@@ -70,7 +99,15 @@ export class AppointmentService {
       description: `Message from our volunteer: ${message}`,
       userId: existingAppointment.userId,
     });
-    // todo: send firebase notification
+
+    await axios.post('https://fcm.googleapis.com/fcm/send', {
+      to: user.fcmToken,
+      notification: {
+        title: `Appointment Status: ${status}`,
+        body: `Message from our volunteer: ${message}`,
+      },
+    });
+
     await this.appointmentModel.updateOne(
       { _id: appointmentId },
       {
@@ -78,6 +115,7 @@ export class AppointmentService {
         status,
       },
     );
+
     return {
       ...existingAppointment,
       message,
