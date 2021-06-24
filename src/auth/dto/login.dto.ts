@@ -1,4 +1,10 @@
-import { IsEnum, IsNotEmpty, Length } from 'class-validator';
+import {
+  IsEnum,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  Length,
+} from 'class-validator';
 
 export enum UserType {
   volunteer = 'volunteer',
@@ -18,6 +24,7 @@ export class LoginDto {
   @IsEnum(UserType)
   type: UserType;
 
-  @IsNotEmpty()
+  @IsOptional()
+  @IsString()
   fcmToken: string;
 }

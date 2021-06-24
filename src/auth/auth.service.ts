@@ -33,13 +33,15 @@ export class AuthService {
       throw new HttpException('Wrong Password', HttpStatus.FORBIDDEN);
     }
 
-    loginDto.type === UserType.user
-      ? await this.userService.update(authenticatedEntity.id, {
-          fcmToken: loginDto.fcmToken,
-        })
-      : await this.volunteerService.update(authenticatedEntity.id, {
-          fcmToken: loginDto.fcmToken,
-        });
+    if (loginDto.fcmToken) {
+      loginDto.type === UserType.user
+        ? await this.userService.update(authenticatedEntity.id, {
+            fcmToken: loginDto.fcmToken,
+          })
+        : await this.volunteerService.update(authenticatedEntity.id, {
+            fcmToken: loginDto.fcmToken,
+          });
+    }
 
     return {
       ...authenticatedEntity,
