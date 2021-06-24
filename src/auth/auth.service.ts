@@ -35,10 +35,10 @@ export class AuthService {
 
     if (loginDto.fcmToken) {
       loginDto.type === UserType.user
-        ? await this.userService.update(authenticatedEntity.id, {
+        ? await this.userService.update(authenticatedEntity._id, {
             fcmToken: loginDto.fcmToken,
           })
-        : await this.volunteerService.update(authenticatedEntity.id, {
+        : await this.volunteerService.update(authenticatedEntity._id, {
             fcmToken: loginDto.fcmToken,
           });
     }
