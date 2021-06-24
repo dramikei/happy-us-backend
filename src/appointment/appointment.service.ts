@@ -49,13 +49,22 @@ export class AppointmentService {
       userId: createAppointmentDto.volunteerId,
     });
 
-    await axios.post('https://fcm.googleapis.com/fcm/send', {
-      to: volunteer.fcmToken,
-      notification: {
-        title: 'New Appointment Alert',
-        body: `Hey good person, check out this appointment from ${createAppointmentDto.userSocial.id}`,
+    await axios.post(
+      'https://fcm.googleapis.com/fcm/send',
+      {
+        to: volunteer.fcmToken,
+        notification: {
+          title: 'New Appointment Alert',
+          body: `Hey good person, check out this appointment from ${createAppointmentDto.userSocial.id}`,
+        },
       },
-    });
+      {
+        headers: {
+          Authorization: `key=${process.env.SERVER_KEY}`,
+          'Content-Type': 'application/json',
+        },
+      },
+    );
     return newAppointment.save();
   }
 
@@ -100,13 +109,22 @@ export class AppointmentService {
       userId: existingAppointment.userId,
     });
 
-    await axios.post('https://fcm.googleapis.com/fcm/send', {
-      to: user.fcmToken,
-      notification: {
-        title: `Appointment Status: ${status}`,
-        body: `Message from our volunteer: ${message}`,
+    await axios.post(
+      'https://fcm.googleapis.com/fcm/send',
+      {
+        to: user.fcmToken,
+        notification: {
+          title: `Appointment Status: ${status}`,
+          body: `Message from our volunteer: ${message}`,
+        },
       },
-    });
+      {
+        headers: {
+          Authorization: `key=${process.env.SERVER_KEY}`,
+          'Content-Type': 'application/json',
+        },
+      },
+    );
 
     await this.appointmentModel.updateOne(
       { _id: appointmentId },
