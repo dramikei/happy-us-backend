@@ -43,7 +43,7 @@ export class AppointmentService {
     await this.notificationService.create({
       redirectTo: `/appointments/${newAppointment._id}`,
       title: 'New Appointment Alert',
-      time: new Date(),
+      time: createAppointmentDto.time,
       seen: false,
       description: `Hey good person, check out this appointment from ${createAppointmentDto.userSocial.id}`,
       userId: createAppointmentDto.volunteerId,
