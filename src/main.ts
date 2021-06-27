@@ -64,7 +64,7 @@ bootstrap().then(() => {
   setInterval(async () => {
     await axios.get('https://happyusapi.herokuapp.com/api/ping');
     console.log('Keeping the server alive!!');
-  }, 20 * 60 * 1000); // 20 minutes interval
+  }, 9 * 60 * 1000); // 9 minutes interval
 
   console.log(
     `Server Started on port ${process.env.PORT || process.env.APP_PORT}`,
