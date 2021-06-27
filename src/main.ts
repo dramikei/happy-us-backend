@@ -12,6 +12,7 @@ import fastifyHelmet from 'fastify-helmet';
 import { ExceptionsFilter } from './utils/exceptions.filter';
 import { ValidationPipe } from '@nestjs/common';
 import { ResponseInterceptor } from './utils/response.interceptor';
+import axios from 'axios';
 
 const bootstrap = async () => {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -59,6 +60,12 @@ const bootstrap = async () => {
 };
 
 bootstrap().then(() => {
+  // heroku sleep hack
+  setInterval(async () => {
+    await axios.get('https://happyusapi.herokuapp.com/api/ping');
+    console.log('Keeping the server alive!!');
+  }, 20 * 60 * 1000); // 20 minutes interval
+
   console.log(
     `Server Started on port ${process.env.PORT || process.env.APP_PORT}`,
   );
