@@ -2,7 +2,7 @@ import { Body, Controller, Patch, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { RegisterDto } from './dto/register.dto';
 import { AuthInfo, GetAuthInfo } from './auth.middleware';
 
@@ -22,6 +22,7 @@ export class AuthController {
   }
 
   @Patch('changePassword')
+  @ApiBearerAuth()
   changePassword(
     @Body() changePasswordDto: ChangePasswordDto,
     @GetAuthInfo() authInfo: AuthInfo,

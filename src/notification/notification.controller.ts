@@ -2,7 +2,10 @@ import { Body, Controller, Get, Patch, Post } from '@nestjs/common';
 import { NotificationService } from './notification.service';
 import { AuthInfo, GetAuthInfo } from '../auth/auth.middleware';
 import { Notification } from './entities/notification.entity';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Notifications')
+@ApiBearerAuth()
 @Controller('api/notification')
 export class NotificationController {
   constructor(private readonly notificationService: NotificationService) {}

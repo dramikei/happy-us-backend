@@ -2,7 +2,7 @@ import { Body, Controller, Get, Patch, Post } from '@nestjs/common';
 import { AppointmentService } from './appointment.service';
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
 import { UpdateAppointmentDto } from './dto/update-appointment.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthInfo, GetAuthInfo } from '../auth/auth.middleware';
 
 @ApiTags('Appointment')
@@ -11,6 +11,7 @@ export class AppointmentController {
   constructor(private readonly appointmentService: AppointmentService) {}
 
   @Post()
+  @ApiBearerAuth()
   create(
     @Body() createAppointmentDto: CreateAppointmentDto,
     @GetAuthInfo() authInfo: AuthInfo,
@@ -19,11 +20,13 @@ export class AppointmentController {
   }
 
   @Get()
+  @ApiBearerAuth()
   findForUser(@GetAuthInfo() authInfo: AuthInfo) {
     return this.appointmentService.findForUser(authInfo);
   }
 
   @Patch()
+  @ApiBearerAuth()
   updateStatus(
     @GetAuthInfo() authInfo: AuthInfo,
     @Body() updateAppointmentDto: UpdateAppointmentDto,

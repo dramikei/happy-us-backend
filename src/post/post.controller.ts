@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Patch, Post } from '@nestjs/common';
 import { PostService } from './post.service';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Post as PostDto } from './entities/post.entity';
 import { AuthInfo, GetAuthInfo } from '../auth/auth.middleware';
 
@@ -10,6 +10,7 @@ export class PostController {
   constructor(private readonly postService: PostService) {}
 
   @Post()
+  @ApiBearerAuth()
   create(@Body() createPostDto: PostDto, @GetAuthInfo() authInfo: AuthInfo) {
     return this.postService.create(createPostDto, authInfo);
   }
@@ -20,11 +21,13 @@ export class PostController {
   }
 
   @Get('user')
+  @ApiBearerAuth()
   findUserPosts(@GetAuthInfo() authInfo: AuthInfo) {
     return this.postService.findUserPosts(authInfo);
   }
 
   @Patch()
+  @ApiBearerAuth()
   updateLikeCount(
     @Body() updatePostDto: { postId: string; event: 'add' | 'remove' },
     @GetAuthInfo() authInfo: AuthInfo,
@@ -33,6 +36,7 @@ export class PostController {
   }
 
   @Delete()
+  @ApiBearerAuth()
   remove(
     @Body() deletePostDto: { postId: string },
     @GetAuthInfo() authInfo: AuthInfo,
