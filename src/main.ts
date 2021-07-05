@@ -13,6 +13,9 @@ import { ExceptionsFilter } from './utils/exceptions.filter';
 import { ValidationPipe } from '@nestjs/common';
 import { ResponseInterceptor } from './utils/response.interceptor';
 import axios from 'axios';
+import { Volunteer } from './volunteer/entities/volunteer.entity';
+import { User } from './user/entities/user.entity';
+import { Appointment } from './appointment/entities/appointment.entity';
 
 const bootstrap = async () => {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -47,7 +50,9 @@ const bootstrap = async () => {
     .setDescription('The API to use Happy Us database')
     .setVersion('1.0')
     .build();
-  const document = SwaggerModule.createDocument(app, config);
+  const document = SwaggerModule.createDocument(app, config, {
+    extraModels: [User, Volunteer, Appointment],
+  });
 
   SwaggerModule.setup('api', app, document, {
     swaggerOptions: {

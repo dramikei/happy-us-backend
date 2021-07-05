@@ -4,6 +4,8 @@ import { CreateAppointmentDto } from './dto/create-appointment.dto';
 import { UpdateAppointmentDto } from './dto/update-appointment.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthInfo, GetAuthInfo } from '../auth/auth.middleware';
+import { ApiBaseResponse } from '../utils/api-base-response';
+import { Appointment } from './entities/appointment.entity';
 
 @ApiTags('Appointment')
 @Controller('api/appointment')
@@ -12,6 +14,7 @@ export class AppointmentController {
 
   @Post()
   @ApiBearerAuth()
+  @ApiBaseResponse(Appointment)
   create(
     @Body() createAppointmentDto: CreateAppointmentDto,
     @GetAuthInfo() authInfo: AuthInfo,
@@ -21,12 +24,14 @@ export class AppointmentController {
 
   @Get()
   @ApiBearerAuth()
+  @ApiBaseResponse(Appointment, false, true)
   findForUser(@GetAuthInfo() authInfo: AuthInfo) {
     return this.appointmentService.findForUser(authInfo);
   }
 
   @Patch()
   @ApiBearerAuth()
+  @ApiBaseResponse(Appointment)
   updateStatus(
     @GetAuthInfo() authInfo: AuthInfo,
     @Body() updateAppointmentDto: UpdateAppointmentDto,
