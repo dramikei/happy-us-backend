@@ -12,19 +12,24 @@ export class NotificationController {
   constructor(private readonly notificationService: NotificationService) {}
 
   @Post()
-  @ApiBaseResponse(Notification)
+  @ApiBaseResponse({ model: Notification, usesAuth: true })
   create(@Body() createNotificationDto: Notification) {
     return this.notificationService.create(createNotificationDto);
   }
 
   @Get()
-  @ApiBaseResponse(Notification, false, true)
+  @ApiBaseResponse({
+    model: Notification,
+    oneOfUserTypes: false,
+    isArray: true,
+    usesAuth: true,
+  })
   findByUser(@GetAuthInfo() authInfo: AuthInfo) {
     return this.notificationService.findByUser(authInfo.id);
   }
 
   @Patch('/markSeen')
-  @ApiBaseResponse(Notification)
+  @ApiBaseResponse({ model: Notification, usesAuth: true })
   markSeen(
     @Body() updateNotificationDto: { notificationId: string },
     @GetAuthInfo() authInfo: AuthInfo,

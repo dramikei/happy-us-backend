@@ -12,14 +12,14 @@ export class VolunteerController {
   constructor(private readonly volunteerService: VolunteerService) {}
 
   @Get()
-  @ApiBaseResponse(Volunteer)
+  @ApiBaseResponse({ model: Volunteer, usesAuth: true })
   @ApiBearerAuth()
   findOne(@GetAuthInfo() authInfo: AuthInfo) {
     return this.volunteerService.findOne(authInfo.id);
   }
 
   @Get('all')
-  @ApiBaseResponse(Volunteer, false, true)
+  @ApiBaseResponse({ model: Volunteer, oneOfUserTypes: false, isArray: true })
   findAll() {
     return this.volunteerService.findAll();
   }
@@ -27,7 +27,7 @@ export class VolunteerController {
   // can only be updated with admin permission
   @Patch()
   @ApiBearerAuth()
-  @ApiBaseResponse(Volunteer)
+  @ApiBaseResponse({ model: Volunteer, usesAuth: true })
   update(
     @GetAuthInfo() authInfo: AuthInfo,
     @Body() updateVolunteerDto: UpdateVolunteerDto,
@@ -38,7 +38,7 @@ export class VolunteerController {
   // can only be deleted with admin permission
   @Delete()
   @ApiBearerAuth()
-  @ApiBaseResponse(Volunteer)
+  @ApiBaseResponse({ model: Volunteer })
   remove(@GetAuthInfo() authInfo: AuthInfo) {
     return this.volunteerService.remove(authInfo.id);
   }

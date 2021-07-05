@@ -14,7 +14,7 @@ export class AppointmentController {
 
   @Post()
   @ApiBearerAuth()
-  @ApiBaseResponse(Appointment)
+  @ApiBaseResponse({ model: Appointment, usesAuth: true })
   create(
     @Body() createAppointmentDto: CreateAppointmentDto,
     @GetAuthInfo() authInfo: AuthInfo,
@@ -24,14 +24,19 @@ export class AppointmentController {
 
   @Get()
   @ApiBearerAuth()
-  @ApiBaseResponse(Appointment, false, true)
+  @ApiBaseResponse({
+    model: Appointment,
+    oneOfUserTypes: false,
+    isArray: true,
+    usesAuth: true,
+  })
   findForUser(@GetAuthInfo() authInfo: AuthInfo) {
     return this.appointmentService.findForUser(authInfo);
   }
 
   @Patch()
   @ApiBearerAuth()
-  @ApiBaseResponse(Appointment)
+  @ApiBaseResponse({ model: Appointment })
   updateStatus(
     @GetAuthInfo() authInfo: AuthInfo,
     @Body() updateAppointmentDto: UpdateAppointmentDto,

@@ -7,7 +7,7 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  @ApiBaseResponse(String)
+  @ApiBaseResponse({ model: String })
   ping(@Ip() ip): string {
     return this.appService.ping(ip);
   }

@@ -3,11 +3,41 @@ import { ApiOkResponse, getSchemaPath } from '@nestjs/swagger';
 import { Volunteer } from '../volunteer/entities/volunteer.entity';
 import { User } from '../user/entities/user.entity';
 
-export const ApiBaseResponse = <TModel extends Type>(
-  model: TModel,
-  oneOfUserTypes?: boolean,
-  isArray?: boolean,
-) => {
+export const ApiBaseResponse = <TModel extends Type>({
+  model,
+  oneOfUserTypes,
+  isArray,
+  usesAuth,
+}: {
+  model: TModel;
+  oneOfUserTypes?: boolean;
+  isArray?: boolean;
+  usesAuth?: boolean;
+}) => {
+  const baseFields = usesAuth
+    ? {
+        message: { type: 'string' },
+        path: { type: 'string' },
+        status: { type: 'string' },
+        tokens: {
+          type: 'object',
+          properties: {
+            refreshToken: {
+              type: 'string',
+            },
+            accessToken: {
+              type: 'string',
+            },
+          },
+        },
+      }
+    : {
+        message: { type: 'string' },
+        path: { type: 'string' },
+        status: { type: 'string' },
+        tokens: { type: 'object' },
+      };
+
   return oneOfUserTypes
     ? applyDecorators(
         ApiOkResponse({
@@ -23,9 +53,7 @@ export const ApiBaseResponse = <TModel extends Type>(
                       { $ref: getSchemaPath(Volunteer) },
                     ],
                   },
-                  message: { type: 'string' },
-                  path: { type: 'string' },
-                  status: { type: 'string' },
+                  ...baseFields,
                 },
               },
             ],
@@ -51,9 +79,7 @@ export const ApiBaseResponse = <TModel extends Type>(
                           },
                         }
                       : { $ref: getSchemaPath(model) },
-                  message: { type: 'string' },
-                  path: { type: 'string' },
-                  status: { type: 'string' },
+                  ...baseFields,
                 },
               },
             ],

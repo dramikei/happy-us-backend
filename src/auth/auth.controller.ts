@@ -13,19 +13,19 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('login')
-  @ApiBaseResponse(Object, true)
+  @ApiBaseResponse({ model: Object, oneOfUserTypes: true })
   login(@Body() loginDto: LoginDto) {
     return this.authService.login(loginDto);
   }
 
   @Post('register')
-  @ApiBaseResponse(Object, true)
+  @ApiBaseResponse({ model: Object, oneOfUserTypes: true })
   register(@Body() registerDto: RegisterDto) {
     return this.authService.register(registerDto);
   }
 
   @Patch('changePassword')
-  @ApiBaseResponse(String)
+  @ApiBaseResponse({ model: String, usesAuth: true })
   @ApiBearerAuth()
   changePassword(
     @Body() changePasswordDto: ChangePasswordDto,
