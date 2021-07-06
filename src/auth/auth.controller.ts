@@ -1,4 +1,4 @@
-import { Body, Controller, Patch, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, Patch, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
@@ -16,7 +16,12 @@ export class AuthController {
    * Login as a volunteer or a user
    * */
   @Post('login')
-  @ApiBaseResponse({ model: Object, oneOfUserTypes: true, sendTokens: true })
+  @HttpCode(200)
+  @ApiBaseResponse({
+    model: Object,
+    oneOfUserTypes: true,
+    sendTokens: true,
+  })
   login(@Body() loginDto: LoginDto) {
     return this.authService.login(loginDto);
   }
@@ -25,7 +30,12 @@ export class AuthController {
    * Register as a user or volunteer, adminToken is required only for volunteer
    * */
   @Post('register')
-  @ApiBaseResponse({ model: Object, oneOfUserTypes: true, sendTokens: true })
+  @ApiBaseResponse({
+    model: Object,
+    oneOfUserTypes: true,
+    sendTokens: true,
+    createTypeRequest: true,
+  })
   register(@Body() registerDto: RegisterDto) {
     return this.authService.register(registerDto);
   }

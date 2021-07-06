@@ -12,7 +12,11 @@ export class PostController {
 
   @Post()
   @ApiBearerAuth()
-  @ApiBaseResponse({ model: PostDto, sendTokens: true })
+  @ApiBaseResponse({
+    model: PostDto,
+    sendTokens: true,
+    createTypeRequest: true,
+  })
   create(@Body() createPostDto: PostDto, @GetAuthInfo() authInfo: AuthInfo) {
     return this.postService.create(createPostDto, authInfo);
   }

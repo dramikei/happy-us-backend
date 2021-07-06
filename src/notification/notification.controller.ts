@@ -12,7 +12,11 @@ export class NotificationController {
   constructor(private readonly notificationService: NotificationService) {}
 
   @Post()
-  @ApiBaseResponse({ model: Notification, sendTokens: true })
+  @ApiBaseResponse({
+    model: Notification,
+    sendTokens: true,
+    createTypeRequest: true,
+  })
   create(@Body() createNotificationDto: Notification) {
     return this.notificationService.create(createNotificationDto);
   }

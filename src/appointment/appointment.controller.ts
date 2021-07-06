@@ -14,7 +14,11 @@ export class AppointmentController {
 
   @Post()
   @ApiBearerAuth()
-  @ApiBaseResponse({ model: Appointment, sendTokens: true })
+  @ApiBaseResponse({
+    model: Appointment,
+    sendTokens: true,
+    createTypeRequest: true,
+  })
   create(
     @Body() createAppointmentDto: CreateAppointmentDto,
     @GetAuthInfo() authInfo: AuthInfo,
