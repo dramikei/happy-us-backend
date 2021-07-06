@@ -13,13 +13,13 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  @ApiBaseResponse({ model: User, usesAuth: true })
+  @ApiBaseResponse({ model: User, sendTokens: true })
   findOne(@GetAuthInfo() authInfo: AuthInfo) {
     return this.userService.findOne(authInfo.id);
   }
 
   @Patch()
-  @ApiBaseResponse({ model: User, usesAuth: true })
+  @ApiBaseResponse({ model: User, sendTokens: true })
   update(
     @GetAuthInfo() authInfo: AuthInfo,
     @Body() updateUserDto: UpdateUserDto,
@@ -28,7 +28,7 @@ export class UserController {
   }
 
   @Delete()
-  @ApiBaseResponse({ model: User, usesAuth: true })
+  @ApiBaseResponse({ model: User, sendTokens: true })
   remove(@GetAuthInfo() authInfo: AuthInfo) {
     return this.userService.remove(authInfo.id);
   }

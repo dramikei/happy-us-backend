@@ -12,7 +12,7 @@ export class PostController {
 
   @Post()
   @ApiBearerAuth()
-  @ApiBaseResponse({ model: PostDto, usesAuth: true })
+  @ApiBaseResponse({ model: PostDto, sendTokens: true })
   create(@Body() createPostDto: PostDto, @GetAuthInfo() authInfo: AuthInfo) {
     return this.postService.create(createPostDto, authInfo);
   }
@@ -29,7 +29,7 @@ export class PostController {
     model: PostDto,
     oneOfUserTypes: false,
     isArray: true,
-    usesAuth: true,
+    sendTokens: true,
   })
   findUserPosts(@GetAuthInfo() authInfo: AuthInfo) {
     return this.postService.findUserPosts(authInfo);
@@ -37,7 +37,7 @@ export class PostController {
 
   @Patch()
   @ApiBearerAuth()
-  @ApiBaseResponse({ model: PostDto, usesAuth: true })
+  @ApiBaseResponse({ model: PostDto, sendTokens: true })
   updateLikeCount(
     @Body() updatePostDto: { postId: string; event: 'add' | 'remove' },
     @GetAuthInfo() authInfo: AuthInfo,
@@ -47,7 +47,7 @@ export class PostController {
 
   @Delete()
   @ApiBearerAuth()
-  @ApiBaseResponse({ model: String, usesAuth: true })
+  @ApiBaseResponse({ model: String, sendTokens: true })
   remove(
     @Body() deletePostDto: { postId: string },
     @GetAuthInfo() authInfo: AuthInfo,

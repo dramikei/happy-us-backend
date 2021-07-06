@@ -47,7 +47,7 @@ const bootstrap = async () => {
   const config = new DocumentBuilder()
     .addBearerAuth()
     .setTitle('Happy Us')
-    .setDescription('The API to use Happy Us database')
+    .setDescription('The Guide to Happy-Us API.')
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config, {

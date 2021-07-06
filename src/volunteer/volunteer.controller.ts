@@ -12,7 +12,7 @@ export class VolunteerController {
   constructor(private readonly volunteerService: VolunteerService) {}
 
   @Get()
-  @ApiBaseResponse({ model: Volunteer, usesAuth: true })
+  @ApiBaseResponse({ model: Volunteer, sendTokens: true })
   @ApiBearerAuth()
   findOne(@GetAuthInfo() authInfo: AuthInfo) {
     return this.volunteerService.findOne(authInfo.id);
@@ -27,7 +27,7 @@ export class VolunteerController {
   // can only be updated with admin permission
   @Patch()
   @ApiBearerAuth()
-  @ApiBaseResponse({ model: Volunteer, usesAuth: true })
+  @ApiBaseResponse({ model: Volunteer, sendTokens: true })
   update(
     @GetAuthInfo() authInfo: AuthInfo,
     @Body() updateVolunteerDto: UpdateVolunteerDto,

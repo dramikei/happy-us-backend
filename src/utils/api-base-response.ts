@@ -7,14 +7,14 @@ export const ApiBaseResponse = <TModel extends Type>({
   model,
   oneOfUserTypes,
   isArray,
-  usesAuth,
+  sendTokens,
 }: {
   model: TModel;
   oneOfUserTypes?: boolean;
   isArray?: boolean;
-  usesAuth?: boolean;
+  sendTokens?: boolean;
 }) => {
-  const baseFields = usesAuth
+  const baseFields = sendTokens
     ? {
         message: { type: 'string' },
         path: { type: 'string' },

@@ -12,20 +12,29 @@ import { ApiBaseResponse } from '../utils/api-base-response';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  /**
+   * Login as a volunteer or a user
+   * */
   @Post('login')
-  @ApiBaseResponse({ model: Object, oneOfUserTypes: true })
+  @ApiBaseResponse({ model: Object, oneOfUserTypes: true, sendTokens: true })
   login(@Body() loginDto: LoginDto) {
     return this.authService.login(loginDto);
   }
 
+  /**
+   * Register as a user or volunteer, adminToken is required only for volunteer
+   * */
   @Post('register')
-  @ApiBaseResponse({ model: Object, oneOfUserTypes: true })
+  @ApiBaseResponse({ model: Object, oneOfUserTypes: true, sendTokens: true })
   register(@Body() registerDto: RegisterDto) {
     return this.authService.register(registerDto);
   }
 
+  /**
+   * Change password of both types, requires old password for re-authentication
+   * */
   @Patch('changePassword')
-  @ApiBaseResponse({ model: String, usesAuth: true })
+  @ApiBaseResponse({ model: String, sendTokens: true })
   @ApiBearerAuth()
   changePassword(
     @Body() changePasswordDto: ChangePasswordDto,
