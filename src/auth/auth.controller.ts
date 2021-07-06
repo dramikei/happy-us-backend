@@ -8,7 +8,7 @@ import { AuthInfo, GetAuthInfo } from './auth.middleware';
 import { ApiBaseResponse } from '../utils/api-base-response';
 
 @ApiTags('auth')
-@Controller('api/auth')
+@Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 

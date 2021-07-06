@@ -7,7 +7,7 @@ import { ApiBaseResponse } from '../utils/api-base-response';
 import { Volunteer } from './entities/volunteer.entity';
 
 @ApiTags('volunteer')
-@Controller('api/volunteer')
+@Controller('volunteer')
 export class VolunteerController {
   constructor(private readonly volunteerService: VolunteerService) {}
 

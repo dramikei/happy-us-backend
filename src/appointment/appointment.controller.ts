@@ -8,7 +8,7 @@ import { ApiBaseResponse } from '../utils/api-base-response';
 import { Appointment } from './entities/appointment.entity';
 
 @ApiTags('Appointment')
-@Controller('api/appointment')
+@Controller('appointment')
 export class AppointmentController {
   constructor(private readonly appointmentService: AppointmentService) {}
 

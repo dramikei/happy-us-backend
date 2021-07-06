@@ -34,6 +34,7 @@ const bootstrap = async () => {
     },
   });
 
+  app.setGlobalPrefix('api');
   app.useGlobalFilters(new ExceptionsFilter());
   app.useGlobalInterceptors(new ResponseInterceptor());
   app.useGlobalPipes(

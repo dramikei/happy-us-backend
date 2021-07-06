@@ -43,31 +43,31 @@ import { NotificationModule } from './notification/notification.module';
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(AuthMiddleware).forRoutes(
-      'api/auth/changePassword',
-      'api/appointment',
-      'api/notification',
-      'api/notification/markSeen',
-      'api/user',
-      'api/post/user',
+      'auth/changePassword',
+      'appointment',
+      'notification',
+      'notification/markSeen',
+      'user',
+      'post/user',
       {
-        path: 'api/post',
+        path: 'post',
         method: RequestMethod.POST,
       },
       {
-        path: 'api/post',
+        path: 'post',
         method: RequestMethod.PATCH,
       },
       {
-        path: 'api/volunteer',
+        path: 'volunteer',
         method: RequestMethod.GET,
       },
       {
-        path: 'api/post',
+        path: 'post',
         method: RequestMethod.DELETE,
       },
     );
     consumer
       .apply(CheckAdminMiddleware)
-      .forRoutes('api/volunteer', 'api/static-content');
+      .forRoutes('volunteer', 'static-content');
   }
 }

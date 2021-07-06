@@ -6,7 +6,7 @@ import { AuthInfo, GetAuthInfo } from '../auth/auth.middleware';
 import { ApiBaseResponse } from '../utils/api-base-response';
 
 @ApiTags('post')
-@Controller('api/post')
+@Controller('post')
 export class PostController {
   constructor(private readonly postService: PostService) {}
 

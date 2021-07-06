@@ -7,7 +7,7 @@ import { ApiBaseResponse } from '../utils/api-base-response';
 
 @ApiTags('Notifications')
 @ApiBearerAuth()
-@Controller('api/notification')
+@Controller('notification')
 export class NotificationController {
   constructor(private readonly notificationService: NotificationService) {}
 
